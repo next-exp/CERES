@@ -61,7 +61,7 @@ output = check_output(cmd, shell=True, executable='/bin/bash')
 ceres_tag = output.strip().split('\n')[0]
 
 #Get IC tag
-exec_template_file = '/home/icuser/production/templates/irene.sh'
+exec_template_file = '/home/icuser/CERES/templates/irene.sh'
 pattern = '(\s*)export(\s*)ICTDIR(\s*)=(\s*)(?P<icrepo>.*)'
 icpath = find_pattern(pattern, exec_template_file, 'icrepo')
 cmd = 'cd {}; git describe --tags'.format(icpath)
@@ -101,23 +101,23 @@ files = sorted(files, key=get_index_from_file_name)
 #open template
 #TODO read from params
 
-templates = { 'alpha'    : '/home/icuser/production/templates/irene_alpha.conf'     ,
-              'alpha3200': '/home/icuser/production/templates/irene_alpha_3200.conf',
-              'alpha_s1' : '/home/icuser/production/templates/irene_alpha_s1.conf'  ,
-              'alpha800' : '/home/icuser/production/templates/irene_alpha_800.conf' ,
-              'na'       : '/home/icuser/production/templates/irene_na.conf'        ,
-              'kr3200'   : '/home/icuser/production/templates/irene_kr_3200.conf'   ,
-              'kr1300'   : '/home/icuser/production/templates/irene_kr_1300.conf'   ,
-              'co'       : '/home/icuser/production/templates/irene_co.conf'        ,
-              'co2ms'    : '/home/icuser/production/templates/irene_co_2ms.conf'    ,
-              'nas1'     : '/home/icuser/production/templates/irene_na_s1.conf'     ,
-              'nas1_200' : '/home/icuser/production/templates/irene_na_s1_200.conf' ,
-              'nas2'     : '/home/icuser/production/templates/irene_na_s2.conf'     ,
-              'nas21600' : '/home/icuser/production/templates/irene_na_s2_1600.conf',
-              'cs1300'   : '/home/icuser/production/templates/irene_cs_s2_1300.conf',
-              'cs2000'   : '/home/icuser/production/templates/irene_cs_s2_2000.conf',
-              'th2000'   : '/home/icuser/production/templates/irene_th_s2_2000.conf',
-              'bg2000'   : '/home/icuser/production/templates/irene_bg_s2_2000.conf'}
+templates = { 'alpha'    : '/home/icuser/CERES/templates/irene_alpha.conf'     ,
+              'alpha3200': '/home/icuser/CERES/templates/irene_alpha_3200.conf',
+              'alpha_s1' : '/home/icuser/CERES/templates/irene_alpha_s1.conf'  ,
+              'alpha800' : '/home/icuser/CERES/templates/irene_alpha_800.conf' ,
+              'na'       : '/home/icuser/CERES/templates/irene_na.conf'        ,
+              'kr3200'   : '/home/icuser/CERES/templates/irene_kr_3200.conf'   ,
+              'kr1300'   : '/home/icuser/CERES/templates/irene_kr_1300.conf'   ,
+              'co'       : '/home/icuser/CERES/templates/irene_co.conf'        ,
+              'co2ms'    : '/home/icuser/CERES/templates/irene_co_2ms.conf'    ,
+              'nas1'     : '/home/icuser/CERES/templates/irene_na_s1.conf'     ,
+              'nas1_200' : '/home/icuser/CERES/templates/irene_na_s1_200.conf' ,
+              'nas2'     : '/home/icuser/CERES/templates/irene_na_s2.conf'     ,
+              'nas21600' : '/home/icuser/CERES/templates/irene_na_s2_1600.conf',
+              'cs1300'   : '/home/icuser/CERES/templates/irene_cs_s2_1300.conf',
+              'cs2000'   : '/home/icuser/CERES/templates/irene_cs_s2_2000.conf',
+              'th2000'   : '/home/icuser/CERES/templates/irene_th_s2_2000.conf',
+              'bg2000'   : '/home/icuser/CERES/templates/irene_bg_s2_2000.conf'}
 
 # Pick from dict of templates. Otherwise assume it is the path to a template.
 template_file = templates.get(runtype, runtype)
@@ -191,20 +191,20 @@ if not skip_sub:
         sleep(0.3)
 
 #create dorothea job
-templates_dst = { 'alpha'    : '/home/icuser/production/templates/dorothea_alpha.conf'   ,
-                  'alpha800' : '/home/icuser/production/templates/dorothea_alpha.conf'   ,
-                  'alpha_s1' : '/home/icuser/production/templates/dorothea_alpha.conf'   ,
-                  'nas1'     : '/home/icuser/production/templates/dorothea_nas1.conf'    ,
-                  'nas1_200' : '/home/icuser/production/templates/dorothea_nas1_200.conf',
-                  'co'       : '/home/icuser/production/templates/dorothea_co.conf'      ,
-                  'kr3200'   : '/home/icuser/production/templates/dorothea_kr.conf'      ,
-                  'kr1300'   : '/home/icuser/production/templates/dorothea_kr.conf'      ,
-                  'nas2'     : '/home/icuser/production/templates/dorothea_nas2.conf'    ,
-                  'nas21600' : '/home/icuser/production/templates/dorothea_nas2.conf'    ,
-                  'cs1300'   : '/home/icuser/production/templates/dorothea_css2.conf'    ,
-                  'cs2000'   : '/home/icuser/production/templates/dorothea_css2.conf'    ,
-                  'th2000'   : '/home/icuser/production/templates/dorothea_ths2.conf'    ,
-                  'bg2000'   : '/home/icuser/production/templates/dorothea_bgs2.conf'    }
+templates_dst = { 'alpha'    : '/home/icuser/CERES/templates/dorothea_alpha.conf'   ,
+                  'alpha800' : '/home/icuser/CERES/templates/dorothea_alpha.conf'   ,
+                  'alpha_s1' : '/home/icuser/CERES/templates/dorothea_alpha.conf'   ,
+                  'nas1'     : '/home/icuser/CERES/templates/dorothea_nas1.conf'    ,
+                  'nas1_200' : '/home/icuser/CERES/templates/dorothea_nas1_200.conf',
+                  'co'       : '/home/icuser/CERES/templates/dorothea_co.conf'      ,
+                  'kr3200'   : '/home/icuser/CERES/templates/dorothea_kr.conf'      ,
+                  'kr1300'   : '/home/icuser/CERES/templates/dorothea_kr.conf'      ,
+                  'nas2'     : '/home/icuser/CERES/templates/dorothea_nas2.conf'    ,
+                  'nas21600' : '/home/icuser/CERES/templates/dorothea_nas2.conf'    ,
+                  'cs1300'   : '/home/icuser/CERES/templates/dorothea_css2.conf'    ,
+                  'cs2000'   : '/home/icuser/CERES/templates/dorothea_css2.conf'    ,
+                  'th2000'   : '/home/icuser/CERES/templates/dorothea_ths2.conf'    ,
+                  'bg2000'   : '/home/icuser/CERES/templates/dorothea_bgs2.conf'    }
 
 if runtype in templates_dst:
     template_file = templates_dst[runtype]

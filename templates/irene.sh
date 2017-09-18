@@ -7,9 +7,9 @@
 
 echo date
 date
-export PATH="/home/icuser/anaconda2/bin:$PATH"
-export LD_LIBRARY_PATH="/home/icuser/anaconda2/lib:$LD_LIBRARY_PATH"
-export ICTDIR=/home/icuser/IC
+export PATH="/software/miniconda3/bin:$PATH"
+export LD_LIBRARY_PATH="/software/miniconda3/lib:$LD_LIBRARY_PATH"
+export ICTDIR=/software/IC
 export ICDIR=$ICTDIR/invisible_cities
 export PYTHONPATH=$ICTDIR:$PYTHONPATH
-source activate IC3.5
+source activate IC3.6
