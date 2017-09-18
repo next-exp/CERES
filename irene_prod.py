@@ -4,12 +4,23 @@ from __future__ import print_function
 import os
 import argparse
 import magic
+import re
 
 from math       import ceil
 from time       import sleep
-from subprocess import call
+from subprocess import check_output, call, CalledProcessError
 from glob       import glob
 
+def find_pattern(pattern, fname, group_name):
+    result = ''
+    data = open(fname).readlines()
+    for line in data:
+        pattern = re.compile(pattern)
+        match = pattern.match(line)
+        if match:
+            result =  match.group(group_name)
+            break
+    return result
 
 def get_parser():
     parser = argparse.ArgumentParser(description='Script to produce HDF5 files')
@@ -44,6 +55,18 @@ def checkmakedir(path):
 def get_index_from_file_name(name):
     return int(name.split('.')[-3].split('_')[0])
 
+#Get CERES tag
+cmd = 'git describe --tags'
+output = check_output(cmd, shell=True, executable='/bin/bash')
+ceres_tag = output.strip().split('\n')[0]
+
+#Get IC tag
+exec_template_file = '/home/icuser/production/templates/irene.sh'
+pattern = '(\s*)export(\s*)ICTDIR(\s*)=(\s*)(?P<icrepo>.*)'
+icpath = find_pattern(pattern, exec_template_file, 'icrepo')
+cmd = 'cd {}; git describe --tags'.format(icpath)
+output = check_output(cmd, shell=True, executable='/bin/bash')
+ic_tag = output.strip().split('\n')[0]
 
 #get options
 args = get_parser().parse_args()
@@ -114,7 +137,8 @@ for f in files:
         continue
 
     filename     = f.split('/')[-1]
-    filename_out = filename.replace("dst_waves", "pmaps")
+    new_name     = 'pmaps_' + ic_tag + '_' + ceres_tag
+    filename_out = filename.replace("dst_waves", new_name)
 
     #if file already exists, skip
     fout = PATHOUT + '/' + filename_out
@@ -133,7 +157,7 @@ for f in files:
     if len(to_process) == nmax:
         break
 
-exec_template_file = '/home/icuser/production/templates/irene.sh'
+#Generate exec files
 exec_template      = open(exec_template_file).read()
 exec_params        = {'jobsdir': JOBSDIR}
 
