@@ -27,6 +27,7 @@ def get_parser():
     parser.add_argument('-j','--jobs',
                         action   = 'store',
                         help     = 'jobs',
+                        type     = int,
                         required = 'True')
     parser.add_argument('-r','--run',
                         action   = 'store',
@@ -39,7 +40,8 @@ def get_parser():
     parser.add_argument('-m','--maxfiles',
                         action   = 'store',
                         help     = 'maximum number of files to be processed',
-                        default  = float("inf"))
+                        type     = int,
+                        default  = -1)
     parser.add_argument('-x','--do-not-submit',
                         action   = 'store_true',
                         help     = 'skip job submission if present')
@@ -71,7 +73,7 @@ ic_tag = output.strip().split('\n')[0]
 #get options
 args = get_parser().parse_args()
 
-jobs     = int(args.jobs)
+jobs     = args.jobs
 run      = args.run
 runtype  = args.type
 nmax     = args.maxfiles
