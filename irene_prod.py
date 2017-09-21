@@ -104,6 +104,7 @@ files = sorted(files, key=get_index_from_file_name)
 templates = {
     'csexample' : '/home/icuser/CERES_dev/templates/irene_CsProd_example.conf',
     'kr1300'    : '/home/icuser/CERES_dev/templates/irene_kr_s2_1300.conf',
+    'kr1300i'    : '/home/icuser/CERES_dev/templates/irene_kr_s2_1300i.conf',
     'cs2000'    : '/home/icuser/CERES_dev/templates/irene_cs_s2_2000.conf',
     'th2000'    : '/home/icuser/CERES_dev/templates/irene_th_s2_2000.conf',
     'bg2000'    : '/home/icuser/CERES_dev/templates/irene_bg_s2_2000.conf',
