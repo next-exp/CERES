@@ -142,8 +142,8 @@ for f in files:
         print("skip ", fout)
         continue
 
-    params['filein' ] = filename
-    params['fileout'] = filename_out
+    params['filein' ] = PATHIN + '/' + filename
+    params['fileout'] = PATHOUT + '/' + filename_out
 
     config_file = CONFIGSDIR + '/' + filename + '.conf'
     print(config_file)
