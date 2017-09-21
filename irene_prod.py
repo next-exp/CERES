@@ -105,6 +105,10 @@ templates = {
     'csexample' : '/home/icuser/CERES_dev/templates/irene_CsProd_example.conf',
     'kr1300'    : '/home/icuser/CERES_dev/templates/irene_kr_s2_1300.conf',
     'kr1300i'    : '/home/icuser/CERES_dev/templates/irene_kr_s2_1300i.conf',
+    'kr1500i'    : '/home/icuser/CERES_dev/templates/irene_kr_s2_1500i.conf',
+    'kr1650i'    : '/home/icuser/CERES_dev/templates/irene_kr_s2_1650i.conf',
+    'kr1900i'    : '/home/icuser/CERES_dev/templates/irene_kr_s2_1900i.conf',
+    'kr2200i'    : '/home/icuser/CERES_dev/templates/irene_kr_s2_2200i.conf',
     'cs2000'    : '/home/icuser/CERES_dev/templates/irene_cs_s2_2000.conf',
     'th2000'    : '/home/icuser/CERES_dev/templates/irene_th_s2_2000.conf',
     'bg2000'    : '/home/icuser/CERES_dev/templates/irene_bg_s2_2000.conf',
@@ -186,6 +190,11 @@ if not skip_sub:
 templates_dst = {
 'csexample' : '/home/icuser/CERES_dev/templates/dorothea_example.conf',
 'kr1300'    : '/home/icuser/CERES_dev/templates/dorothea_kr.conf',
+'kr1300i'    : '/home/icuser/CERES_dev/templates/dorothea_kr.conf',
+'kr1500i'    : '/home/icuser/CERES_dev/templates/dorothea_kr.conf',
+'kr1650i'    : '/home/icuser/CERES_dev/templates/dorothea_kr.conf',
+'kr1900i'    : '/home/icuser/CERES_dev/templates/dorothea_kr.conf',
+'kr2200i'    : '/home/icuser/CERES_dev/templates/dorothea_kr.conf',
 'cs2000'    : '/home/icuser/CERES_dev/templates/dorothea_cs.conf',
 'th2000'    : '/home/icuser/CERES_dev/templates/dorothea_th.conf',
 'bg2000'    : '/home/icuser/CERES_dev/templates/penthesilea_bg.conf'
