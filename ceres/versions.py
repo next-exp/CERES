@@ -1,11 +1,13 @@
 from subprocess import check_output, call, CalledProcessError
 import os
+import logging
 
 from ceres import utils
 
 #get CERES tag
 def get_ceres_tag():
     cmd = 'git describe --tags'
+    unstaged_changes()
     output = check_output(cmd, shell=True, executable='/bin/bash')
     ceres_tag = output.strip().split('\n')[0]
     return ceres_tag
@@ -27,3 +29,19 @@ def get_ic_tag(templates):
     output = check_output(cmd, shell=True, executable='/bin/bash')
     ic_tag = output.strip().split('\n')[0]
     return ic_tag
+
+#check there are no unstaged changes
+def unstaged_changes():
+    cmd = 'git diff --name-only'
+    output = check_output(cmd, shell=True, executable='/bin/bash')
+    files  = output.strip().split('\n')
+    if len(files):
+        message  = 'You have modified files that are not included in a commit.'
+        message += 'Please do it with:\n'
+        message += '\tgit add <files>\n'
+        message += '\tgit commit -m "short description"\n'
+        message += 'This are the files:\n\t'
+        for f in files:
+            message += f + ' '
+        logging.warning(message)
+

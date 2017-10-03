@@ -1,6 +1,7 @@
 from __future__ import division
 from __future__ import print_function
 
+import logging
 import os
 import argparse
 import magic
@@ -44,12 +45,20 @@ def get_parser():
     parser.add_argument('-ceres','--ceres-tag',
                         action   = 'store',
                         help     = 'ceres tag for input files')
+    parser.add_argument('-d','--debug',
+                        action   = 'store_true',
+                        help     = 'print debug information')
     return parser
 
 
 #get options
 args = get_parser().parse_args()
-print (args)
+#set logging level
+if args.debug:
+    logging.basicConfig(level=logging.DEBUG)
+else:
+    logging.basicConfig(level=logging.INFO)
+logging.debug("Input arguments: {}".format(args))
 
 #get tags
 version        = versions.get_version()
@@ -59,9 +68,11 @@ ceres_tag      = versions.get_ceres_tag()
 versions       = data.Versions(ic        = ic_tag,
                                ceres = ceres_tag,
                                config    = args.type)
+logging.debug(versions)
+logging.info("You are running {} version with IC tag {} and CERES tag {}".
+             format(version, ic_tag, ceres_tag))
 
 #IO dirs
-#TODO: choose input dir (ictag, version, city...)
 path_in  = utils.get_input_path(args, version)
 base_dir = '/analysis/{}/hdf5/{}/{}/{}/'.format(args.run,
                                                 version,
@@ -77,28 +88,28 @@ paths = data.Paths(input   = path_in,
                    configs = configs,
                    jobs    = jobs_dir,
                    logs    = logs_dir)
-print(paths)
+logging.debug(paths)
+logging.info("{} output files will be in {}".format(cities.outputs[args.city],
+                                                     paths.output))
 
 #check and make dirs
 map(utils.check_make_dir, paths)
 
 #remove old jobs
 old_jobs = os.path.join(paths.jobs, args.city + '*sh')
-print (old_jobs)
 map(os.remove, glob(old_jobs))
 
 #input files
 files = utils.list_input_files(paths)
-print(files)
 
 #generate configs files
 config_files = jobs.generate_configs(files, args, paths, versions)
-print(config_files)
 
 #generate job files
 job_files = jobs.generate_jobs(config_files, args, paths, versions)
-print(job_files)
 
 #submit jobs
 if not args.do_not_submit:
     jobs.submit(job_files)
+
+logging.info("Done")

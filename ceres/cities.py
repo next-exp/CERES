@@ -7,4 +7,9 @@ outputs = {'irene'       : 'pmaps',
 # or one job for all input files
 configs = {'irene'       : '1to1',
            'dorothea'    : 'allto1',
-           'penthesilea' : 'allto1'}
+           'penthesilea' : '1to1'}
+
+#input dirs for cities
+inputs = {'irene'       : 'data',
+          'dorothea'    : outputs['irene'],
+          'penthesilea' : outputs['irene']}
