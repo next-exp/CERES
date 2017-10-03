@@ -1,3 +1,9 @@
+from __future__ import division
+
+from subprocess import call
+from math       import ceil
+from time       import sleep
+
 import magic
 import os
 
@@ -24,7 +30,7 @@ def config_files_1to1(files, args, paths, versions):
                     versions.ceres,
                     versions.config]
         filename_out = '_'.join(new_name) + '.h5'
-        print (filename_out)
+        #print (filename_out)
 
         #if file already exists, skip
         fout = os.path.join(paths.output, filename_out)
@@ -40,7 +46,7 @@ def config_files_1to1(files, args, paths, versions):
         template = templates.get(args.city, args.type)
 
         config_file = os.path.join(paths.configs, filename + '.conf')
-        print(config_file)
+        #print(config_file)
         open (config_file, 'w').write(template.format(**params))
 
         to_process.append(config_file)
@@ -59,7 +65,7 @@ def config_files_allto1(files, args, paths, versions):
                 versions.ceres,
                 versions.config]
     filename_out = '_'.join(new_name) + '.h5'
-    print (filename_out)
+    #print (filename_out)
 
     params = {}
     params['filein' ] = os.path.join(paths.input, '*h5')
@@ -69,7 +75,7 @@ def config_files_allto1(files, args, paths, versions):
     template = templates.get(args.city, args.type)
 
     config_file = os.path.join(paths.configs, filename_out + '.conf')
-    print(config_file)
+    #print(config_file)
     open (config_file, 'w').write(template.format(**params))
 
     to_process.append(config_file)
@@ -77,8 +83,54 @@ def config_files_allto1(files, args, paths, versions):
 
 def generate_configs(files, args, paths, versions):
     conf_type = cities.configs[args.city]
+    config_files = []
     if conf_type == '1to1':
-        config_files_1to1(files, args, paths, versions)
+        config_files = config_files_1to1(files, args, paths, versions)
     if conf_type == 'allto1':
-        config_files_allto1(files, args, paths, versions)
+        config_files = config_files_allto1(files, args, paths, versions)
+    return config_files
+
+
+def generate_jobs(configs, args, paths, versions):
+    to_submit = []
+    #Generate exec files
+    template = templates.exec_template()
+    print (template)
+    exec_params = {'jobname': 'TODO', #TODO
+                   'jobout' : paths.logs,
+                   'joberr' : paths.logs}
+
+    jobfile    = file
+    nfiles     = int(ceil(len(configs) * 1.0 / int(args.jobs)))
+    print(nfiles)
+    count_jobs = 0
+    for i, config in enumerate(configs):
+        if i % nfiles == 0:
+            if i: # write at the end of each file
+                jobfile.write('\n\necho date\ndate\n')
+                jobfile.close()
+
+            jobfilename = '{}_{}.sh'.format(args.city, count_jobs)
+            jobfilename = os.path.join(paths.jobs, jobfilename)
+            to_submit.append(jobfilename)
+            print(jobfilename)
+            jobfile     = open(jobfilename, 'w')
+            jobfile.write(template.format(**exec_params))
+            count_jobs += 1
+
+        cmd = 'city {} {}\n'.format(args.city, config)
+        jobfile.write(cmd)
+
+    if not jobfile.closed:
+        jobfile.close()
+
+    return to_submit
+
+def submit(jobs):
+    print jobs
+    for job in jobs:
+        cmd = 'qsub {}'.format(job)
+        print(cmd)
+        call(cmd, shell=True, executable='/bin/bash')
+        sleep(0.3)
 

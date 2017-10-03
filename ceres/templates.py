@@ -17,11 +17,17 @@ def get_dir(version):
         base_path = os.environ['CERESDIR']
     else:
         base_path = os.environ['CERESDEVDIR']
-    return base_path + '/templates/'
-
+    return os.path.join(base_path, 'templates/')
 
 def get(city, template):
     version = versions.get_version()
     template_file = get_dir(version) + templates[city][template]
     template = open(template_file).read()
     return template
+
+def exec_template():
+    version = versions.get_version()
+    template_file = os.path.join(get_dir(version), 'exec.sh')
+    template = open(template_file).read()
+    return template
+

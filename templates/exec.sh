@@ -1,8 +1,8 @@
 #!/bin/bash
-#PBS -N {jobsdir}
+#PBS -N {jobname}
 #PBS -q short
-#PBS -o {jobsdir}
-#PBS -e {jobsdir}
+#PBS -o {jobout}
+#PBS -e {joberr}
 #PBS -M jmbenlloch@ific.uv.es
 
 echo date

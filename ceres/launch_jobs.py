@@ -38,6 +38,12 @@ def get_parser():
     parser.add_argument('-x','--do-not-submit',
                         action   = 'store_true',
                         help     = 'skip job submission if present')
+    parser.add_argument('-ic','--ic-tag',
+                        action   = 'store',
+                        help     = 'ic tag for input files')
+    parser.add_argument('-ceres','--ceres-tag',
+                        action   = 'store',
+                        help     = 'ceres tag for input files')
     return parser
 
 
@@ -56,30 +62,43 @@ versions       = data.Versions(ic        = ic_tag,
 
 #IO dirs
 #TODO: choose input dir (ictag, version, city...)
-path_in  = '/analysis/{}/hdf5/data/'   .format(args.run)
-base_dir = '/analysis/{}/hdf5/{}/{}/{}/'.format(args.run, version, ic_tag, ceres_tag)
+path_in  = utils.get_input_path(args, version)
+base_dir = '/analysis/{}/hdf5/{}/{}/{}/'.format(args.run,
+                                                version,
+                                                ic_tag,
+                                                ceres_tag)
 path_out = base_dir + cities.outputs[args.city] + '/'
 configs  = base_dir + 'configs/'
 jobs_dir = base_dir + 'jobs/'
+logs_dir = base_dir + 'logs/'
 
-paths = data.Paths(input = path_in,
-                   output     = path_out,
+paths = data.Paths(input   = path_in,
+                   output  = path_out,
                    configs = configs,
-                   jobs    = jobs_dir)
+                   jobs    = jobs_dir,
+                   logs    = logs_dir)
 print(paths)
 
 #check and make dirs
 map(utils.check_make_dir, paths)
 
 #remove old jobs
-map(os.remove, glob(paths.jobs + '/*sh'))
+old_jobs = os.path.join(paths.jobs, args.city + '*sh')
+print (old_jobs)
+map(os.remove, glob(old_jobs))
 
 #input files
 files = utils.list_input_files(paths)
 print(files)
 
-#choose template
+#generate configs files
+config_files = jobs.generate_configs(files, args, paths, versions)
+print(config_files)
 
+#generate job files
+job_files = jobs.generate_jobs(config_files, args, paths, versions)
+print(job_files)
 
-#TODO: Choose 1to1 or allto1
-jobs.generate_configs(files, args, paths, versions)
+#submit jobs
+if not args.do_not_submit:
+    jobs.submit(job_files)

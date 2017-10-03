@@ -1,4 +1,5 @@
 from subprocess import check_output, call, CalledProcessError
+import os
 
 from ceres import utils
 
@@ -19,7 +20,7 @@ def get_version():
 
 #get IC tag
 def get_ic_tag(templates):
-    exec_template_file = templates + 'exec.sh'
+    exec_template_file = os.path.join(templates, 'exec.sh')
     pattern = '(\s*)export(\s*)ICTDIR(\s*)=(\s*)(?P<icrepo>.*)'
     icpath = utils.find_pattern_in_file(pattern, exec_template_file, 'icrepo')
     cmd = 'cd {}; git describe --tags'.format(icpath)
