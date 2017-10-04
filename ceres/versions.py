@@ -35,7 +35,7 @@ def unstaged_changes():
     cmd = 'git diff --name-only'
     output = check_output(cmd, shell=True, executable='/bin/bash')
     files  = output.strip().split('\n')
-    if len(files):
+    if files[0] != '':
         message  = 'You have modified files that are not included in a commit.'
         message += 'Please do it with:\n'
         message += '\tgit add <files>\n'
