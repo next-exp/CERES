@@ -1,0 +1,4 @@
+#!/bin/bash
+
+export PYTHONPATH=$CERESDIR:$PYTHONPATH
+python $CERESDIR/ceres/launch_jobs.py $*

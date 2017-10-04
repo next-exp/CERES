@@ -5,10 +5,13 @@ from ceres import versions
 
 templates = {
     'irene' : {
-        'kr1300' : 'irene_kr_s2_1300.conf'
+        'kr1300'   : 'irene_kr_1300.conf'   ,
+        'nas1'     : 'irene_na_s1.conf'     ,
+        'th2000'   : 'irene_th_s2_2000.conf',
     },
     'dorothea' : {
-        'kr1300' : 'dorothea_kr.conf'
+        'kr'     : 'dorothea_kr.conf'  ,
+        'th2000' : 'dorothea_ths2.conf',
     }
 }
 
