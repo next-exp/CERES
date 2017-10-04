@@ -1,4 +1,5 @@
 import os
+import logging
 
 from ceres import versions
 
@@ -21,6 +22,10 @@ def get_dir(version):
 
 def get(city, template):
     version = versions.get_version()
+    if not template in templates[city]:
+        logging.error("Template {} not found for city {}".\
+                      format(city, template))
+        exit(1)
     template_file = get_dir(version) + templates[city][template]
     template = open(template_file).read()
     return template
