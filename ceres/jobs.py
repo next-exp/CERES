@@ -41,6 +41,9 @@ def config_files_1to1(files, args, paths, versions):
             continue
 
         params = {}
+        if versions.version == 'prod':
+            params['pathin']  = '.'
+            params['pathout'] = '.'
         params['filein' ] = os.path.join(paths.input, filename)
         params['fileout'] = fout
         params['run']     = args.run
@@ -71,6 +74,9 @@ def config_files_allto1(files, args, paths, versions):
     filename_out = '_'.join(new_name) + '.h5'
 
     params = {}
+    if versions.version == 'prod':
+        params['pathin']  = '.'
+        params['pathout'] = '.'
     params['filein' ] = os.path.join(paths.input, '*h5')
     params['fileout'] = os.path.join(paths.output, filename_out)
     logging.debug("Output file: {}".format(params['fileout']))
@@ -131,7 +137,10 @@ def generate_jobs(configs, args, paths, versions):
             jobfile.write(template.format(**exec_params))
             count_jobs += 1
 
-        cmd = 'city {} {}\n'.format(args.city, config)
+        if versions.version == 'dev':
+            cmd = 'city {} {}\n'.format(args.city, config)
+        else:
+            cmd = 'python $ICDIR/cities/{}.py -c {}\n'.format(args.city, config)
         jobfile.write(cmd)
 
     if not jobfile.closed:

@@ -65,9 +65,10 @@ version        = versions.get_version()
 templates_dir  = templates.get_dir(version)
 ic_tag         = versions.get_ic_tag(templates_dir)
 ceres_tag      = versions.get_ceres_tag()
-versions       = data.Versions(ic        = ic_tag,
-                               ceres = ceres_tag,
-                               config    = args.type)
+versions       = data.Versions(ic      = ic_tag,
+                               ceres   = ceres_tag,
+                               config  = args.type,
+                               version = version)
 logging.debug(versions)
 logging.info("You are running {} version with IC tag {} and CERES tag {}".
              format(version, ic_tag, ceres_tag))
