@@ -90,6 +90,7 @@ paths = data.Paths(input   = path_in,
                    jobs    = jobs_dir,
                    logs    = logs_dir)
 logging.debug(paths)
+logging.info("Files from {} will be processed".format(paths.input))
 logging.info("{} output files will be in {}".format(cities.outputs[args.city],
                                                      paths.output))
 
