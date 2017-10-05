@@ -40,6 +40,8 @@ def unstaged_changes():
         message += 'Please do it with:\n'
         message += '\tgit add <files>\n'
         message += '\tgit commit -m "short description"\n'
+        message += '\tgit tag <tagname>\n'
+        message += '\tgit push origin <tagname>\n'
         message += 'This are the files:\n\t'
         for f in files:
             message += f + ' '
