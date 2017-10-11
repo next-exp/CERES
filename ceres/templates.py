@@ -4,14 +4,18 @@ import logging
 from ceres import versions
 
 templates = {
+    'diomira' : {
+        'diomira' : 'diomira.conf'
+    },
     'irene' : {
-        'kr1300'   : 'irene_kr_1300.conf'   ,
-        'nas1'     : 'irene_na_s1.conf'     ,
-        'th2000'   : 'irene_th_s2_2000.conf',
+        'kr'   : 'irene_kr.conf',
+        'na'   : 'irene_na.conf',
+        'cs'   : 'irene_cs.conf',
+        'tl'   : 'irene_tl.conf',
     },
     'dorothea' : {
         'kr'     : 'dorothea_kr.conf'  ,
-        'th2000' : 'dorothea_ths2.conf',
+        'na' : 'dorothea_na.conf',
     }
 }
 
@@ -36,6 +40,12 @@ def get(city, template):
 def exec_template():
     version = versions.get_version()
     template_file = os.path.join(get_dir(version), 'exec.sh')
+    template = open(template_file).read()
+    return template
+
+def job_template():
+    version = versions.get_version()
+    template_file = os.path.join(get_dir(version), 'job.submit')
     template = open(template_file).read()
     return template
 

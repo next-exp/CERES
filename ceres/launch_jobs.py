@@ -16,21 +16,17 @@ from ceres import jobs
 
 def get_parser():
     parser = argparse.ArgumentParser(description='Script to produce HDF5 files')
-    parser.add_argument('-j','--jobs',
-                        action   = 'store',
-                        help     = 'jobs',
-                        required = 'True')
     parser.add_argument('-c','--city',
                         action   = 'store',
                         help     = 'city',
                         required = 'True')
-    parser.add_argument('-r','--run',
-                        action   = 'store',
-                        help     = 'run number',
-                        required = 'True')
     parser.add_argument('-t','--type',
                         action   = 'store',
                         help     = 'run type',
+                        required = 'True')
+    parser.add_argument('-i','--isotope',
+                        action   = 'store',
+                        help     = 'isotope',
                         required = 'True')
     parser.add_argument('-m','--maxfiles',
                         action   = 'store',
@@ -42,6 +38,9 @@ def get_parser():
     parser.add_argument('-ic','--ic-tag',
                         action   = 'store',
                         help     = 'ic tag for input files')
+    parser.add_argument('-n','--next-tag',
+                        action   = 'store',
+                        help     = 'next tag for input files')
     parser.add_argument('-ceres','--ceres-tag',
                         action   = 'store',
                         help     = 'ceres tag for input files')
@@ -75,18 +74,19 @@ logging.info("You are running {} version with IC tag {} and CERES tag {}".
 
 #IO dirs
 path_in  = utils.get_input_path(args, version)
-base_dir = '/analysis/{}/hdf5/{}/{}/{}/'.format(args.run,
-                                                version,
-                                                ic_tag,
-                                                ceres_tag)
+base_dir = '/eos/experiment/next/productions/{}/{}/{}/'.format(args.isotope,
+                                                               ic_tag,
+                                                               ceres_tag)
 path_out = base_dir + cities.outputs[args.city] + '/'
 configs  = base_dir + 'configs/'
 jobs_dir = base_dir + 'jobs/'
+exec_dir = base_dir + 'exec/'
 logs_dir = base_dir + 'logs/'
 
 paths = data.Paths(input   = path_in,
                    output  = path_out,
                    configs = configs,
+                   execs   = exec_dir,
                    jobs    = jobs_dir,
                    logs    = logs_dir)
 logging.debug(paths)

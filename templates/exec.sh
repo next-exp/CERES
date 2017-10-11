@@ -1,15 +1,29 @@
 #!/bin/bash
-#PBS -N {jobname}
-#PBS -q short
-#PBS -o {jobout}
-#PBS -e {joberr}
-#PBS -M jmbenlloch@ific.uv.es
-
 echo date
 date
-export PATH="/software/miniconda3/bin:$PATH"
-export LD_LIBRARY_PATH="/software/miniconda3/lib:$LD_LIBRARY_PATH"
-export ICTDIR=/software/IC
-export ICDIR=$ICTDIR/invisible_cities
+
+# Set paths
+export ICTDIR=/afs/cern.ch/work/j/jobenllo/software/IC
+export ICDIR=$ICTDIR/invisible_cities/
+export CONDA=/afs/cern.ch/work/j/jobenllo/software/miniconda
+export PATH=$CONDA/bin:$PATH
+export PATH=$ICTDIR/bin:$PATH
+export LD_LIBRARY_PATH=$CONDA/lib:$LD_LIBRARY_PATH
 export PYTHONPATH=$ICTDIR:$PYTHONPATH
 source activate IC3.6
+
+# Copy file
+xrdcp root://eospublic.cern.ch/{pathin}/{filein} {filein}
+echo date
+date
+
+city {city} {configfile}
+echo date
+date
+
+xrdcp {fileout} root://eospublic.cern.ch/{pathout}/{fileout}
+echo date
+date
+
+# To avoid copy from condor to AFS dir
+rm *h5

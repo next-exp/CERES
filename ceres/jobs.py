@@ -24,10 +24,10 @@ def config_files_1to1(files, args, paths, versions):
 
         filename     = f.split('/')[-1]
         fileno = utils.get_index_from_file_name(filename)
-        #filenames: '{city}_{fileno}_{run}_{ictag}_{certestag}_{configfile}.h5
-        new_name = [cities.outputs[args.city],
+        new_name = [args.isotope,
+                    cities.outputs[args.city],
                     fileno,
-                    args.run,
+                    args.next_tag,
                     versions.ic,
                     versions.ceres,
                     versions.config]
@@ -41,12 +41,8 @@ def config_files_1to1(files, args, paths, versions):
             continue
 
         params = {}
-        if versions.version == 'prod':
-            params['pathin']  = '.'
-            params['pathout'] = '.'
-        params['filein' ] = os.path.join(paths.input, filename)
-        params['fileout'] = fout
-        params['run']     = args.run
+        params['filein' ] = filename
+        params['fileout'] = filename_out
 
         template = templates.get(args.city, args.type)
 
@@ -63,6 +59,7 @@ def config_files_1to1(files, args, paths, versions):
     return to_process
 
 
+#TODO: fix for MC
 def config_files_allto1(files, args, paths, versions):
     to_process = []
     #filenames: '{city}_{run}_{ictag}_{certestag}_{configfile}.h5
@@ -74,13 +71,9 @@ def config_files_allto1(files, args, paths, versions):
     filename_out = '_'.join(new_name) + '.h5'
 
     params = {}
-    if versions.version == 'prod':
-        params['pathin']  = '.'
-        params['pathout'] = '.'
     params['filein' ] = os.path.join(paths.input, '*h5')
     params['fileout'] = os.path.join(paths.output, filename_out)
     logging.debug("Output file: {}".format(params['fileout']))
-    params['run']     = args.run
 
     template = templates.get(args.city, args.type)
 
@@ -106,52 +99,63 @@ def generate_jobs(configs, args, paths, versions):
     if not len(configs):
         logging.warning("All files has already been processed!")
         exit(0)
+    logging.info("Exec directory: {}".format(paths.execs))
     logging.info("Jobs directory: {}".format(paths.jobs))
     to_submit = []
     #Generate exec files
     template = templates.exec_template()
-    exec_params = {'jobname': 'to_be_filled',
-                   'jobout' : paths.logs,
-                   'joberr' : paths.logs}
+    exec_params = {'city'       : args.city,
+                   'pathin'     : paths.input,
+                   'pathout'    : paths.output,
+                   'configfile' : 'to be filled',
+                   'filein'     : 'to be filled',
+                   'fileout'    : 'to be filled'}
 
-    jobfile    = file
-    nfiles     = int(ceil(len(configs) * 1.0 / int(args.jobs)))
-    njobs = int(len(configs)/nfiles)
-    logging.info("Creating {} job files, files per jobs: {}".format(njobs, nfiles))
+    #Generate job files
+    job_template = templates.job_template()
+
+    njobs = len(configs)
     count_jobs = 0
+    logging.info("Creating {} job files, files per jobs: {}".format(njobs, 1))
     for i, config in enumerate(configs):
-        if i % nfiles == 0:
-            if i: # write at the end of each file
-                jobfile.write('\n\necho date\ndate\n')
-                jobfile.close()
+        basename = config.split('/')[-1][:-5]
+        execfilename = os.path.join(paths.execs, basename + '.sh')
+        to_submit.append(execfilename)
+        logging.debug("Creating {}".format(execfilename))
 
-            jobfilename = '{}_{}.sh'.format(args.city, count_jobs)
-            jobfilename = os.path.join(paths.jobs, jobfilename)
-            to_submit.append(jobfilename)
-            logging.debug("Creating {}".format(jobfilename))
+        exec_file     = open(execfilename, 'w')
+        exec_params['configfile'] = config
+        filein_pattern  = 'files_in(.*)=(.*)\'(?P<in>.+)\''
+        fileout_pattern = 'file_out(.*)=(.*)\'(?P<out>.+)\''
+        filein  = utils.find_pattern_in_file(filein_pattern , config ,'in')
+        fileout = utils.find_pattern_in_file(fileout_pattern, config ,'out')
+        exec_params['filein'] = filein
+        exec_params['fileout']  = fileout
+        exec_file.write(template.format(**exec_params))
+        exec_file.close()
 
-            job_name = '{}_{}_{}'.format(args.run, args.city, count_jobs)
-            exec_params['jobname'] = job_name
-
-            jobfile     = open(jobfilename, 'w')
-            jobfile.write(template.format(**exec_params))
-            count_jobs += 1
-
-        if versions.version == 'dev':
-            cmd = 'city {} {}\n'.format(args.city, config)
-        else:
-            cmd = 'python $ICDIR/cities/{}.py -c {}\n'.format(args.city, config)
-        jobfile.write(cmd)
-
-    if not jobfile.closed:
+            #Job file
+        out = os.path.join(paths.logs, basename + '.out')
+        err = os.path.join(paths.logs, basename + '.err')
+        log = os.path.join(paths.logs, basename + '.log')
+        job_params = {'exec'   : execfilename,
+                      'output' : out,
+                      'err'    : err,
+                      'log'    : log}
+        jobfilename = os.path.join(paths.jobs, basename + '.submit')
+        logging.debug("Creating {}".format(jobfilename))
+        jobfile     = open(jobfilename, 'w')
+        jobfile.write(job_template.format(**job_params))
         jobfile.close()
+        to_submit.append(jobfilename)
+        count_jobs += 1
 
     return to_submit
 
 def submit(jobs):
     logging.info("Submitting {} jobs".format(len(jobs)))
     for job in jobs:
-        cmd = 'qsub {}'.format(job)
+        cmd = 'condor_submit {}'.format(job)
         logging.debug(cmd)
         call(cmd, shell=True, executable='/bin/bash')
         sleep(0.3)

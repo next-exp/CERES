@@ -31,8 +31,9 @@ def check_make_dir(path):
         os.makedirs(path)
         logging.debug('creating directory: ' + path)
 
+#Hack to include both indexes & pressure
 def get_index_from_file_name(name):
-    pattern = '(.*)[\._](?P<fileno>\d+)_(\d+)(.*)\.h5'
+    pattern = '(.*)[\._](?P<fileno>\d+_\d+_\dbar)(.*)\.h5'
     return find_pattern(pattern, name, 'fileno')
 
 def list_input_files(paths):
@@ -41,10 +42,10 @@ def list_input_files(paths):
     return files
 
 def get_input_path(args, version):
-    path = '/analysis/{}/hdf5/'.format(args.run)
+    path = '/eos/experiment/next/productions/{}/'.format(args.isotope)
     if not os.path.isdir(path):
-        logging.error('Waveforms files has not been processed yet for run {}, there are no input files for IC...'.\
-                      format(args.run))
+        logging.error('{} input files for diomira not found...'.\
+                      format(args.isotope))
         exit(-1)
 
     if not args.city in cities.inputs:
@@ -53,10 +54,9 @@ def get_input_path(args, version):
 
     # Irene always takes the same files while the rest of the cities
     # could take different versions of the pmaps
-    if args.city == 'irene':
-        path = join(path, 'data')
+    if args.city == 'diomira':
+        path = join(path, args.next_tag , cities.inputs['diomira'])
     else:
-        path = join(path, version)
         check_dir(path, args)
         #Scan for IC versions
         if args.ic_tag:
