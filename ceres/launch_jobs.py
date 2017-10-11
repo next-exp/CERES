@@ -77,11 +77,16 @@ path_in  = utils.get_input_path(args, version)
 base_dir = '/eos/experiment/next/productions/{}/{}/{}/'.format(args.isotope,
                                                                ic_tag,
                                                                ceres_tag)
+
+#CERN does not support job submission from EOS for unknown reasons...
+base_dir_afs = '/afs/cern.ch/work/j/jobenllo/productions/{}/{}/{}/'.format(args.isotope,
+                                                                           ic_tag,
+                                                                           ceres_tag)
 path_out = base_dir + cities.outputs[args.city] + '/'
 configs  = base_dir + 'configs/'
-jobs_dir = base_dir + 'jobs/'
-exec_dir = base_dir + 'exec/'
 logs_dir = base_dir + 'logs/'
+jobs_dir = base_dir_afs + 'jobs/'
+exec_dir = base_dir_afs + 'exec/'
 
 paths = data.Paths(input   = path_in,
                    output  = path_out,
