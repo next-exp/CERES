@@ -16,6 +16,8 @@ templates = {
         'cs2000'    : 'irene_cs_s2_2000.conf'    ,
         'th2000'    : 'irene_th_s2_2000.conf'    ,
         'bg2000'    : 'irene_bg_s2_2000.conf'    ,
+        'alpha_s1'  : 'irene_alpha_s1.conf'      ,
+        'alpha_s2'  : 'irene_alpha_s2.conf'      ,
         'test'      : 'irene_test.conf'
     },
     'dorothea' : {
@@ -24,6 +26,7 @@ templates = {
         'na_s1'     : 'dorothea_na.conf',
         'cs2000'    : 'dorothea_cs.conf',
         'th2000'    : 'dorothea_th.conf',
+        'alpha'     : 'dorothea_alpha.conf'
     },
     'penthesilea' : {
         'bg2000'    : 'penthesilea_bg.conf'
