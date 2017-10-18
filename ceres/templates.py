@@ -12,6 +12,7 @@ templates = {
     'dorothea' : {
         'kr'     : 'dorothea_kr.conf'  ,
         'th2000' : 'dorothea_ths2.conf',
+        'cs'     : 'dorothea_cs.conf'  ,
     }
 }
 
