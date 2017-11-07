@@ -137,10 +137,7 @@ def generate_jobs(configs, args, paths, versions):
             jobfile.write(template.format(**exec_params))
             count_jobs += 1
 
-        if versions.version == 'dev':
-            cmd = 'city {} {}\n'.format(args.city, config)
-        else:
-            cmd = 'python $ICDIR/cities/{}.py -c {}\n'.format(args.city, config)
+        cmd = 'city {} {}\n'.format(args.city, config)
         jobfile.write(cmd)
 
     if not jobfile.closed:
