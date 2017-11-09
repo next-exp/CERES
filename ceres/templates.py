@@ -57,3 +57,12 @@ def exec_template():
     template = open(template_file).read()
     return template
 
+def summary_template():
+    version = versions.get_version()
+    template_file = os.path.join(get_dir(version), 'run_summary.py')
+    template_py = open(template_file).read()
+
+    template_file = os.path.join(get_dir(version), 'run_summary.sh')
+    template_sh = open(template_file).read()
+    return template_py, template_sh
+

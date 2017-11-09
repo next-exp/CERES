@@ -7,6 +7,7 @@ from time       import sleep
 import magic
 import os
 import logging
+from glob import glob
 
 from ceres import cities
 from ceres import templates
@@ -122,8 +123,7 @@ def generate_jobs(configs, args, paths, versions):
     for i, config in enumerate(configs):
         if i % nfiles == 0:
             if i: # write at the end of each file
-                jobfile.write('\n\necho date\ndate\n')
-                jobfile.close()
+                close_job_file(jobfile, args, count_jobs)
 
             jobfilename = '{}_{}.sh'.format(args.city, count_jobs)
             jobfilename = os.path.join(paths.jobs, jobfilename)
@@ -141,11 +141,19 @@ def generate_jobs(configs, args, paths, versions):
         jobfile.write(cmd)
 
     if not jobfile.closed:
-        jobfile.close()
+        close_job_file(jobfile, args, count_jobs)
 
     return to_submit
 
-def submit(jobs):
+def close_job_file(jobfile, args, count_jobs):
+    jobfile.write('\n\necho date\ndate\n')
+    analysis_number = get_analysis_number(args.run)
+    monitor_file = 'touch /analysis/spool/jobs/{}/{}/job_{}.txt\n'.format(args.run, analysis_number, count_jobs)
+    jobfile.write(monitor_file)
+    jobfile.close()
+
+
+def submit(jobs, args):
     logging.info("Submitting {} jobs".format(len(jobs)))
     for job in jobs:
         cmd = 'qsub {}'.format(job)
@@ -153,3 +161,38 @@ def submit(jobs):
         call(cmd, shell=True, executable='/bin/bash')
         sleep(0.3)
 
+def run_summary(jobs, args, paths, versions):
+    base_path = '/analysis/spool/jobs/' + args.run + '/'
+    analysis_number = get_analysis_number(args.run)
+    base_path = base_path + str(analysis_number)
+    os.makedirs(base_path)
+    count_file = base_path + '/job_counter.txt'
+    with open(count_file, 'w') as count:
+        count.write(str(len(jobs)) + '\n')
+
+    template_py, template_sh = templates.summary_template()
+    params = {'ic_tag': versions.ic,
+              'ceres_tag' : versions.ceres,
+              'logs_path' : paths.logs,
+              'path_out' : paths.output,
+              'run' : args.run,
+              'datatype' : cities.outputs[args.city].upper(),
+              'dir' : analysis_number}
+
+    py_file = os.path.join(base_path, 'run_summary.py')
+    open (py_file, 'w').write(template_py.format(**params))
+
+    sh_file = os.path.join(base_path, 'run_summary.sh')
+    open (sh_file, 'w').write(template_sh.format(**params))
+
+
+def get_analysis_number(run):
+    base_path = '/analysis/spool/jobs/' + run + '/'
+    analysis_number = 1
+    try:
+        dirs = glob(base_path + '/*')
+        indexes = sorted(map(lambda d: int(d.split('/')[-1]), dirs))
+        analysis_number = indexes[-1] + 1
+    except:
+        pass
+    return analysis_number

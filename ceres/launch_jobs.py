@@ -112,6 +112,7 @@ job_files = jobs.generate_jobs(config_files, args, paths, versions)
 
 #submit jobs
 if not args.do_not_submit:
-    jobs.submit(job_files)
+    jobs.run_summary(job_files, args, paths, versions)
+    jobs.submit(job_files, args)
 
 logging.info("Done")
