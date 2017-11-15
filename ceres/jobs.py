@@ -179,6 +179,7 @@ def run_summary(jobs, args, paths, versions):
               'path_in'   : paths.input,
               'run' : args.run,
               'datatype' : cities.outputs[args.city].upper(),
+              'city' : args.city,
               'dir' : analysis_number}
 
     py_file = os.path.join(base_path, 'run_summary.py')

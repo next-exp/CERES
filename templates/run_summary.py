@@ -37,8 +37,12 @@ path = '{logs_path}'
 path_out = '{path_out}'
 path_in  = '{path_in}'
 
-files = glob(path + '/*irene*.o*')
+files = glob(path + '/*{city}*.o*')
+error_files = glob(path + '/*{city}*.e*')
 files_out = glob(path_out + '/*')
+
+error = sum(map(lambda f: os.stat(f).st_size, error_files))
+output_code = 'OK' if not error else 'ERROR'
 
 times = list(map(getTime, files))
 times = list(filter(lambda ts: len(ts) > 1, times))
@@ -65,7 +69,8 @@ params = {{
     'location' : path_out,
     'father_location' : path_in,
     'release' : release,
-    'config' : config_url
+    'config' : config_url,
+    'code' : output_code,
 }}
 
 template = '''RUN_NUMBER="{{run}}"
@@ -86,6 +91,7 @@ FATHER_LOCATION="{{father_location}}"
 LOCATION="{{location}}"
 CONFIG_FILE1="{{config}}"
 CONFIG_FILE2=""
+OUTPUT_CODE="{{code}}"
 COMMENTS=""'''
 
 parameters_file = os.path.join('/analysis/spool/jobs/{run}/{dir}/parameters.cfg')
