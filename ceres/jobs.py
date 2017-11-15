@@ -177,6 +177,7 @@ def run_summary(jobs, args, paths, versions):
               'logs_path' : paths.logs,
               'path_out'  : paths.output,
               'path_in'   : paths.input,
+              'config'    : templates.getTemplateFilename(args.city, args.type),
               'run' : args.run,
               'datatype' : cities.outputs[args.city].upper(),
               'city' : args.city,

@@ -31,7 +31,7 @@ def getTime(logfile):
 
 ic_tag = '{ic_tag}'
 ceres_tag = '{ceres_tag}'
-config = 'irene_cs_s2_2000.conf'
+config = '{config}'
 run_number = {run}
 path = '{logs_path}'
 path_out = '{path_out}'
