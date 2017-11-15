@@ -174,7 +174,8 @@ def run_summary(jobs, args, paths, versions):
     params = {'ic_tag': versions.ic,
               'ceres_tag' : versions.ceres,
               'logs_path' : paths.logs,
-              'path_out' : paths.output,
+              'path_out'  : paths.output,
+              'path_in'   : paths.input,
               'run' : args.run,
               'datatype' : cities.outputs[args.city].upper(),
               'dir' : analysis_number}

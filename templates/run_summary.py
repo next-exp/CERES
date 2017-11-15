@@ -35,6 +35,7 @@ config = 'irene_cs_s2_2000.conf'
 run_number = {run}
 path = '{logs_path}'
 path_out = '{path_out}'
+path_in  = '{path_in}'
 
 files = glob(path + '/*irene*.o*')
 files_out = glob(path_out + '/*')
@@ -62,6 +63,7 @@ params = {{
     'total_size' : total_size,
     'event_size' : round(total_size / total_evts, 2),
     'location' : path_out,
+    'father_location' : path_in,
     'release' : release,
     'config' : config_url
 }}
@@ -80,6 +82,7 @@ TOTAL_SIZE="{{total_size}}"
 DURATION="{{duration}}"
 EVENT_TIME="{{event_time}}"
 EVENT_SIZE="{{event_size}}"
+FATHER_LOCATION="{{father_location}}"
 LOCATION="{{location}}"
 CONFIG_FILE1="{{config}}"
 CONFIG_FILE2=""
