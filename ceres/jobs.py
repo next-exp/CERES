@@ -5,6 +5,7 @@ from math       import ceil
 from time       import sleep
 
 import magic
+import hashlib
 import os
 import logging
 from glob import glob
@@ -123,7 +124,7 @@ def generate_jobs(configs, args, paths, versions):
     for i, config in enumerate(configs):
         if i % nfiles == 0:
             if i: # write at the end of each file
-                close_job_file(jobfile, args, count_jobs)
+                close_job_file(jobfile, args, paths, count_jobs)
 
             jobfilename = '{}_{}.sh'.format(args.city, count_jobs)
             jobfilename = os.path.join(paths.jobs, jobfilename)
@@ -141,13 +142,13 @@ def generate_jobs(configs, args, paths, versions):
         jobfile.write(cmd)
 
     if not jobfile.closed:
-        close_job_file(jobfile, args, count_jobs)
+        close_job_file(jobfile, args, paths, count_jobs)
 
     return to_submit
 
-def close_job_file(jobfile, args, count_jobs):
+def close_job_file(jobfile, args, paths, count_jobs):
     jobfile.write('\n\necho date\ndate\n')
-    analysis_number = get_analysis_number(args.run)
+    analysis_number = get_analysis_number(paths.output)
     monitor_file = 'touch /analysis/spool/jobs/{}/{}/job_{}.txt\n'.format(args.run, analysis_number, count_jobs)
     jobfile.write(monitor_file)
     jobfile.close()
@@ -163,7 +164,7 @@ def submit(jobs, args):
 
 def run_summary(jobs, args, paths, versions):
     base_path = '/analysis/spool/jobs/' + args.run + '/'
-    analysis_number = get_analysis_number(args.run)
+    analysis_number = get_analysis_number(paths.output)
     base_path = base_path + str(analysis_number)
     os.makedirs(base_path)
     count_file = base_path + '/job_counter.txt'
@@ -187,13 +188,5 @@ def run_summary(jobs, args, paths, versions):
     open (sh_file, 'w').write(template_sh.format(**params))
 
 
-def get_analysis_number(run):
-    base_path = '/analysis/spool/jobs/' + run + '/'
-    analysis_number = 1
-    try:
-        dirs = glob(base_path + '/*')
-        indexes = sorted(map(lambda d: int(d.split('/')[-1]), dirs))
-        analysis_number = indexes[-1] + 1
-    except:
-        pass
-    return analysis_number
+def get_analysis_number(path):
+    return hashlib.md5(path).hexdigest()
