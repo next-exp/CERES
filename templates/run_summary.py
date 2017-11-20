@@ -55,6 +55,13 @@ total_size = sum(map(lambda f: os.stat(f).st_size, files_out))
 release = ic_tag + '-' + ceres_tag
 config_url = 'https://github.com/nextic/CERES/blob/{{}}/templates/{{}}'.format(ceres_tag, config)
 
+try:
+    evt_time = round(duration/total_evts, 2)
+    evt_size = round(total_size / total_evts, 2)
+except:
+    evt_time = 0
+    evt_size = 0
+
 params = {{
     'run' : run_number,
     'start' : start_time.strftime('%Y-%m-%d %H:%M:%S'),
@@ -63,9 +70,9 @@ params = {{
     'files' : total_files,
     'type' : '{datatype}',
     'duration' : int(duration),
-    'event_time' : round(duration/total_evts, 2),
+    'event_time' : evt_time,
     'total_size' : total_size,
-    'event_size' : round(total_size / total_evts, 2),
+    'event_size' : evt_size,
     'location' : path_out,
     'father_location' : path_in,
     'release' : release,
