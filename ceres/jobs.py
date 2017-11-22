@@ -166,7 +166,8 @@ def run_summary(jobs, args, paths, versions):
     base_path = '/analysis/spool/jobs/' + args.run + '/'
     analysis_number = get_analysis_number(paths.output)
     base_path = base_path + str(analysis_number)
-    os.makedirs(base_path)
+    if not os.path.isdir(base_path):
+        os.makedirs(base_path)
     count_file = base_path + '/job_counter.txt'
     with open(count_file, 'w') as count:
         count.write(str(len(jobs)) + '\n')
