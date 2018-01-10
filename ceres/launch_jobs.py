@@ -48,6 +48,9 @@ def get_parser():
     parser.add_argument('-d','--debug',
                         action   = 'store_true',
                         help     = 'print debug information')
+    parser.add_argument('-f','--file',
+                        action   = 'store',
+                        help     = 'file to process')
     return parser
 
 
@@ -102,7 +105,8 @@ old_jobs = os.path.join(paths.jobs, args.city + '*sh')
 map(os.remove, glob(old_jobs))
 
 #input files
-files = utils.list_input_files(paths)
+if  args.file: files =  utils.get_input_file(paths,args.file)
+else: files = utils.list_input_files(paths)
 
 #generate configs files
 config_files = jobs.generate_configs(files, args, paths, versions)
