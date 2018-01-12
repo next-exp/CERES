@@ -6,17 +6,17 @@ from ceres import utils
 
 #get CERES tag
 def get_ceres_tag():
-    cmd = 'git describe --tags'
+    cmd = 'cd $CERESDIR; git describe --tags'
     unstaged_changes()
     output = check_output(cmd, shell=True, executable='/bin/bash')
-    ceres_tag = output.strip().split('\n')[0]
+    ceres_tag = os.fsdecode(output).rstrip()
     return ceres_tag
 
 #get CERES version (prod/dev)
 def get_version():
-    cmd     = "git branch | awk '/\*/ { print $2; }'"
+    cmd     = "cd $CERESDIR; git branch | awk '/\*/ { print $2; }'"
     output  = check_output(cmd, shell=True, executable='/bin/bash')
-    branch  = output.strip().split('\n')[0]
+    branch  = os.fsdecode(output).rstrip()
     version = 'dev' if 'dev' in branch else 'prod'
     return version
 
@@ -27,15 +27,15 @@ def get_ic_tag(templates):
     icpath = utils.find_pattern_in_file(pattern, exec_template_file, 'icrepo')
     cmd = 'cd {}; git describe --tags'.format(icpath)
     output = check_output(cmd, shell=True, executable='/bin/bash')
-    ic_tag = output.strip().split('\n')[0]
+    ic_tag = os.fsdecode(output).rstrip()
     return ic_tag
 
 #check there are no unstaged changes
 def unstaged_changes():
-    cmd = 'git diff --name-only'
+    cmd = 'cd $CERESDIR; git diff --name-only'
     output = check_output(cmd, shell=True, executable='/bin/bash')
-    files  = output.strip().split('\n')
-    if files[0] != '':
+    files  = os.fsdecode(output).split()
+    if files != '':
         message  = 'You have modified files that are not included in a commit.'
         message += 'Please do it with:\n'
         message += '\tgit add <files>\n'
