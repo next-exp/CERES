@@ -98,7 +98,7 @@ logging.info("{} output files will be in {}".format(cities.outputs[args.city],
                                                      paths.output))
 
 #check and make dirs
-map(utils.check_make_dir, paths)
+list(map(utils.check_make_dir, paths))
 
 #remove old jobs
 old_jobs = os.path.join(paths.jobs, args.city + '*sh')
