@@ -116,7 +116,8 @@ def generate_jobs(configs, args, paths, versions):
                    'jobout' : paths.logs,
                    'joberr' : paths.logs}
 
-    jobfile    = file
+    #jobfile    = file
+
     nfiles     = int(ceil(len(configs) * 1.0 / int(args.jobs)))
     njobs = int(len(configs)/nfiles)
     logging.info("Creating {} job files, files per jobs: {}".format(njobs, nfiles))
@@ -192,4 +193,4 @@ def run_summary(jobs, args, paths, versions):
 
 
 def get_analysis_number(path):
-    return hashlib.md5(path).hexdigest()
+    return hashlib.md5(os.fsencode(path)).hexdigest()
