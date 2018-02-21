@@ -32,7 +32,7 @@ def check_make_dir(path):
         logging.debug('creating directory: ' + path)
 
 def get_index_from_file_name(name):
-    pattern = '(.*)[\._](?P<fileno>\d+)_(\d+)(.*)\.h5'
+    pattern = '(.*)[\._](\d+)_(?P<fileno>\d+)(.*)\.h5'
     return find_pattern(pattern, name, 'fileno')
 
 def list_input_files(paths):
