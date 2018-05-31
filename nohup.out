@@ -1,0 +1,62 @@
+INFO:root:You are running prod version with IC tag v0.9.3 and CERES tag 20171128_double
+INFO:root:Files from /analysis/4841/hdf5/data will be processed
+INFO:root:pmaps output files will be in /analysis/4841/hdf5/prod/v0.9.3/20171128_double/pmaps/
+INFO:root:Creating config files in /analysis/4841/hdf5/prod/v0.9.3/20171128_double/configs/
+INFO:root:26602 input hdf5 files found in /analysis/4841/hdf5/data
+INFO:root:Jobs directory: /analysis/4841/hdf5/prod/v0.9.3/20171128_double/jobs/
+INFO:root:Creating 49 job files, files per jobs: 532
+INFO:root:Submitting 50 jobs
+491732.frontend1next
+491733.frontend1next
+491734.frontend1next
+491735.frontend1next
+491736.frontend1next
+491737.frontend1next
+491738.frontend1next
+491739.frontend1next
+491740.frontend1next
+491741.frontend1next
+491742.frontend1next
+491743.frontend1next
+491744.frontend1next
+491745.frontend1next
+491746.frontend1next
+491747.frontend1next
+491748.frontend1next
+491749.frontend1next
+491750.frontend1next
+491751.frontend1next
+491752.frontend1next
+491753.frontend1next
+491754.frontend1next
+491755.frontend1next
+491756.frontend1next
+491757.frontend1next
+491758.frontend1next
+491759.frontend1next
+491760.frontend1next
+491761.frontend1next
+491762.frontend1next
+491763.frontend1next
+491764.frontend1next
+491765.frontend1next
+491766.frontend1next
+491767.frontend1next
+491768.frontend1next
+491769.frontend1next
+491770.frontend1next
+491771.frontend1next
+491772.frontend1next
+491773.frontend1next
+491774.frontend1next
+491775.frontend1next
+491776.frontend1next
+491777.frontend1next
+491778.frontend1next
+491779.frontend1next
+491780.frontend1next
+491781.frontend1next
+INFO:root:Done
+usage: launch_jobs.py [-h] -j JOBS -c CITY -r RUN -t TYPE [-m MAXFILES] [-x]
+                      [-ic IC_TAG] [-ceres CERES_TAG] [-d]
+launch_jobs.py: error: unrecognized arguments: -q long
