@@ -85,7 +85,7 @@ def scan_dirs(path, package):
         option = '-' + package.lower()
         logging.error("Cannot decide which input files version to use...")
         print('''Please choose an {} version for the input files using {} option:
-              {}''').format(package, option, versions_dirs)
+              {}'''.format(package, option, versions_dirs))
         exit(1)
 
     return join(path, versions_dirs[0])
