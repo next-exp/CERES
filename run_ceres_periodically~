@@ -1,0 +1,13 @@
+#!/bin/bash
+
+export PYTHONPATH=$CERESDIR:$PYTHONPATH
+
+sleep_time=$1 # in seconds
+shift
+
+while (true)
+do
+    python $CERESDIR/ceres/launch_jobs.py $*
+    echo "Last submission:" $(date)
+    sleep ${sleep_time}
+done
