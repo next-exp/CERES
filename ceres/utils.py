@@ -32,13 +32,16 @@ def check_make_dir(path):
         logging.debug('creating directory: ' + path)
 
 def get_index_from_file_name(name):
-    pattern = '(.*)[\._](?P<fileno>\d+)_(\d+)(.*)\.h5'
+    pattern = '(.*)[\._](\d+)_(?P<fileno>\d+)(.*)\.h5'
     return find_pattern(pattern, name, 'fileno')
 
 def list_input_files(paths):
     files = glob(paths.input + '/*h5')
     files = sorted(files, key=get_index_from_file_name)
     return files
+
+def get_input_file(paths,ifile):
+    return glob(paths.input + '/*{:04d}*h5'.format(int(ifile)))
 
 def get_input_path(args, version):
     path = '/analysis/{}/hdf5/'.format(args.run)
@@ -82,7 +85,7 @@ def scan_dirs(path, package):
         option = '-' + package.lower()
         logging.error("Cannot decide which input files version to use...")
         print('''Please choose an {} version for the input files using {} option:
-              {}''').format(package, option, versions_dirs)
+              {}'''.format(package, option, versions_dirs))
         exit(1)
 
     return join(path, versions_dirs[0])

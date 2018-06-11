@@ -5,8 +5,10 @@ from math       import ceil
 from time       import sleep
 
 import magic
+import hashlib
 import os
 import logging
+from glob import glob
 
 from ceres import cities
 from ceres import templates
@@ -114,7 +116,8 @@ def generate_jobs(configs, args, paths, versions):
                    'jobout' : paths.logs,
                    'joberr' : paths.logs}
 
-    jobfile    = file
+    #jobfile    = file
+
     nfiles     = int(ceil(len(configs) * 1.0 / int(args.jobs)))
     njobs = int(len(configs)/nfiles)
     logging.info("Creating {} job files, files per jobs: {}".format(njobs, nfiles))
@@ -122,8 +125,7 @@ def generate_jobs(configs, args, paths, versions):
     for i, config in enumerate(configs):
         if i % nfiles == 0:
             if i: # write at the end of each file
-                jobfile.write('\n\necho date\ndate\n')
-                jobfile.close()
+                close_job_file(jobfile, args, paths, count_jobs)
 
             jobfilename = '{}_{}.sh'.format(args.city, count_jobs)
             jobfilename = os.path.join(paths.jobs, jobfilename)
@@ -137,18 +139,23 @@ def generate_jobs(configs, args, paths, versions):
             jobfile.write(template.format(**exec_params))
             count_jobs += 1
 
-        if versions.version == 'dev':
-            cmd = 'city {} {}\n'.format(args.city, config)
-        else:
-            cmd = 'python $ICDIR/cities/{}.py -c {}\n'.format(args.city, config)
+        cmd = 'city {} {}\n'.format(args.city, config)
         jobfile.write(cmd)
 
     if not jobfile.closed:
-        jobfile.close()
+        close_job_file(jobfile, args, paths, count_jobs)
 
     return to_submit
 
-def submit(jobs):
+def close_job_file(jobfile, args, paths, count_jobs):
+    jobfile.write('\n\necho date\ndate\n')
+    analysis_number = get_analysis_number(paths.output)
+    monitor_file = 'touch /analysis/spool/jobs/{}/{}/job_{}.txt\n'.format(args.run, analysis_number, count_jobs)
+    jobfile.write(monitor_file)
+    jobfile.close()
+
+
+def submit(jobs, args):
     logging.info("Submitting {} jobs".format(len(jobs)))
     for job in jobs:
         cmd = 'qsub {}'.format(job)
@@ -156,3 +163,34 @@ def submit(jobs):
         call(cmd, shell=True, executable='/bin/bash')
         sleep(0.3)
 
+def run_summary(jobs, args, paths, versions):
+    base_path = '/analysis/spool/jobs/' + args.run + '/'
+    analysis_number = get_analysis_number(paths.output)
+    base_path = base_path + str(analysis_number)
+    if not os.path.isdir(base_path):
+        os.makedirs(base_path)
+    count_file = base_path + '/job_counter.txt'
+    with open(count_file, 'w') as count:
+        count.write(str(len(jobs)) + '\n')
+
+    template_py, template_sh = templates.summary_template()
+    params = {'ic_tag': versions.ic,
+              'ceres_tag' : versions.ceres,
+              'logs_path' : paths.logs,
+              'path_out'  : paths.output,
+              'path_in'   : paths.input,
+              'config'    : templates.getTemplateFilename(args.city, args.type),
+              'run' : args.run,
+              'datatype' : cities.outputs[args.city].upper(),
+              'city' : args.city,
+              'dir' : analysis_number}
+
+    py_file = os.path.join(base_path, 'run_summary.py')
+    open (py_file, 'w').write(template_py.format(**params))
+
+    sh_file = os.path.join(base_path, 'run_summary.sh')
+    open (sh_file, 'w').write(template_sh.format(**params))
+
+
+def get_analysis_number(path):
+    return hashlib.md5(os.fsencode(path)).hexdigest()

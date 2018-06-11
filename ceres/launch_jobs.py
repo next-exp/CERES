@@ -48,6 +48,9 @@ def get_parser():
     parser.add_argument('-d','--debug',
                         action   = 'store_true',
                         help     = 'print debug information')
+    parser.add_argument('-f','--file',
+                        action   = 'store',
+                        help     = 'file to process')
     return parser
 
 
@@ -95,14 +98,15 @@ logging.info("{} output files will be in {}".format(cities.outputs[args.city],
                                                      paths.output))
 
 #check and make dirs
-map(utils.check_make_dir, paths)
+list(map(utils.check_make_dir, paths))
 
 #remove old jobs
 old_jobs = os.path.join(paths.jobs, args.city + '*sh')
-map(os.remove, glob(old_jobs))
+list(map(os.remove, glob(old_jobs)))
 
 #input files
-files = utils.list_input_files(paths)
+if  args.file: files = utils.get_input_file(paths,args.file)
+else         : files = utils.list_input_files(paths)
 
 #generate configs files
 config_files = jobs.generate_configs(files, args, paths, versions)
@@ -112,6 +116,7 @@ job_files = jobs.generate_jobs(config_files, args, paths, versions)
 
 #submit jobs
 if not args.do_not_submit:
-    jobs.submit(job_files)
+    jobs.run_summary(job_files, args, paths, versions)
+    jobs.submit(job_files, args)
 
 logging.info("Done")

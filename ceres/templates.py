@@ -43,6 +43,15 @@ def get_dir(version):
         base_path = os.environ['CERESDEVDIR']
     return os.path.join(base_path, 'templates/')
 
+def getTemplateFilename(city, template):
+    version = versions.get_version()
+    if not template in templates[city]:
+        logging.error("Template {} not found for city {}".\
+                      format(city, template))
+        exit(1)
+    template_file = templates[city][template]
+    return template_file
+
 def get(city, template):
     version = versions.get_version()
     if not template in templates[city]:
@@ -52,6 +61,16 @@ def get(city, template):
     template_file = get_dir(version) + templates[city][template]
     template = open(template_file).read()
     return template
+
+def summary_template():
+    version = versions.get_version()
+    template_file = os.path.join(get_dir(version), 'run_summary.py')
+    template_py = open(template_file).read()
+
+    template_file = os.path.join(get_dir(version), 'run_summary.sh')
+    template_sh = open(template_file).read()
+    return template_py, template_sh
+
 
 def exec_template():
     version = versions.get_version()
