@@ -38,6 +38,12 @@ def get_index_from_file_name(name):
         pattern = '(.*)[\._](\d+)_(?P<fileno>\d+)(.*)\.h5'
     return find_pattern(pattern, name, 'fileno')
 
+def get_index_from_file_name(name):
+    if "pmaps" in name:
+        return name.split("/")[-1].split("_")[1]
+    else:
+        return name.split("/")[-1].split("_")[2]
+
 def list_input_files(paths):
     files = glob(paths.input + '/*h5')
     files = sorted(files, key=get_index_from_file_name)
