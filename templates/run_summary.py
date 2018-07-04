@@ -16,8 +16,8 @@ def events_and_time(fname):
     total_evts = sum(map(lambda t: t[0], evts_times))
     total_time = sum(map(lambda t: t[1], evts_times))
 
-    times = {}
-    evts  = {}
+    times = {{}}
+    evts  = {{}}
     for fname, params in zip(match_file, matches):
         evts[fname] = int(matches[0][0])
         times[fname] = float(matches[0][1])
