@@ -60,8 +60,8 @@ start_time = sorted(times, key=lambda t: t[0])[0][0]
 end_time = sorted(times, key=lambda t: t[1])[-1][1]
 total_files = len(files)
 
-evts  = {}
-times = {}
+evts  = {{}}
+times = {{}}
 
 for f in files:
     evts_partial, times_partial = events_and_time(f)
