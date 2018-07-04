@@ -1,6 +1,7 @@
 from glob import glob
 from datetime import datetime, timedelta
 import sys, os
+import numpy as np
 import re
 from math import sqrt
 from functools import reduce
@@ -10,10 +11,18 @@ def events_and_time(fname):
     filetext = textfile.read()
     textfile.close()
     matches = re.findall("run (?P<nevts>\d+) evts in (?P<time>\d+\.\d+) s", filetext)
+    match_file = re.findall("Opening (?P<filename>.+)\.\.\.", filetext)
     evts_times = list(map(lambda t: (int(t[0]), float(t[1])), matches))
     total_evts = sum(map(lambda t: t[0], evts_times))
     total_time = sum(map(lambda t: t[1], evts_times))
-    return total_evts, total_time
+
+    times = {}
+    evts  = {}
+    for fname, params in zip(match_file, matches):
+        evts[fname] = int(matches[0][0])
+        times[fname] = float(matches[0][1])
+
+    return evts, times
 
 def getTime(logfile):
     with open(logfile, 'r') as log:
@@ -50,7 +59,18 @@ duration = sum(map(lambda ts : (ts[1] - ts[0]).total_seconds(), times))
 start_time = sorted(times, key=lambda t: t[0])[0][0]
 end_time = sorted(times, key=lambda t: t[1])[-1][1]
 total_files = len(files)
-total_evts, total_time = reduce(lambda x, y: (x[0] + y[0], x[1] + y[1]), map(events_and_time, files))
+
+evts  = {}
+times = {}
+
+for f in files:
+    evts_partial, times_partial = events_and_time(f)
+    evts.update(evts_partial)
+    times.update(times_partial)
+
+total_evts = sum(evts.values())
+total_time = sum(times.values())
+
 total_size = sum(map(lambda f: os.stat(f).st_size, files_out))
 release = ic_tag + '-' + ceres_tag
 config_url = 'https://github.com/nextic/CERES/blob/{{}}/templates/{{}}'.format(ceres_tag, config)
