@@ -14,7 +14,9 @@ templates = {
         'kr2200i'   : 'irene_kr_s2_2200i.conf'   ,
         'na_s1'     : 'irene_na_s1.conf'         ,
         'cs2000'    : 'irene_cs_s2_2000.conf'    ,
+        'krth1300'  : 'irene_krth_s2_1300.conf'  ,
         'th2000'    : 'irene_th_s2_2000.conf'    ,
+        'th1300'    : 'irene_th_s2_1300.conf'    ,
         'bg2000'    : 'irene_bg_s2_2000.conf'    ,
         'alpha_s1'  : 'irene_alpha_s1.conf'      ,
         'alpha_s2'  : 'irene_alpha_s2.conf'      ,
@@ -23,6 +25,7 @@ templates = {
     'dorothea' : {
         'csexample' : 'dorothea_example.conf',
         'kr'        : 'dorothea_kr.conf',
+        'krth'      : 'dorothea_krth.conf',
         'na_s1'     : 'dorothea_na.conf',
         'cs2000'    : 'dorothea_cs.conf',
         'th2000'    : 'dorothea_th.conf',
