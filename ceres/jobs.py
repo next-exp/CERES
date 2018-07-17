@@ -121,18 +121,24 @@ def generate_jobs(configs, args, paths, versions):
     nfiles     = int(ceil(len(configs) * 1.0 / int(args.jobs)))
     njobs = int(len(configs)/nfiles)
     logging.info("Creating {} job files, files per jobs: {}".format(njobs, nfiles))
+
+    offset = 0
+    if 'file' in args:
+        print(args.file)
+        offset = int(args.file)
+
     count_jobs = 0
     for i, config in enumerate(configs):
         if i % nfiles == 0:
             if i: # write at the end of each file
                 close_job_file(jobfile, args, paths, count_jobs)
 
-            jobfilename = '{}_{}.sh'.format(args.city, count_jobs)
+            jobfilename = '{}_{}.sh'.format(args.city, count_jobs+offset)
             jobfilename = os.path.join(paths.jobs, jobfilename)
             to_submit.append(jobfilename)
             logging.debug("Creating {}".format(jobfilename))
 
-            job_name = '{}_{}_{}'.format(args.run, args.city, count_jobs)
+            job_name = '{}_{}_{}'.format(args.run, args.city, count_jobs+offset)
             exec_params['jobname'] = job_name
 
             jobfile     = open(jobfilename, 'w')
