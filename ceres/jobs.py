@@ -113,8 +113,8 @@ def generate_jobs(configs, args, paths, versions):
     #Generate exec files
     template = templates.exec_template()
     exec_params = {'jobname': 'to_be_filled',
-                   'jobout' : paths.logs,
-                   'joberr' : paths.logs}
+                   'jobout' : '/dev/null',
+                   'joberr' : '/dev/null'}
 
     #jobfile    = file
 
@@ -123,8 +123,7 @@ def generate_jobs(configs, args, paths, versions):
     logging.info("Creating {} job files, files per jobs: {}".format(njobs, nfiles))
 
     offset = 0
-    if 'file' in args:
-        print(args.file)
+    if args.file:
         offset = int(args.file)
 
     count_jobs = 0
@@ -145,7 +144,10 @@ def generate_jobs(configs, args, paths, versions):
             jobfile.write(template.format(**exec_params))
             count_jobs += 1
 
-        cmd = 'city {} {}\n'.format(args.city, config)
+        log_base = "{}/{}_{}_{}".format(paths.logs, args.city, args.run, count_jobs+offset-1)
+        log_out = log_base + ".out"
+        log_err = log_base + ".err"
+        cmd = 'city {} {} 1>{} 2>{}\n'.format(args.city, config, log_out, log_err)
         jobfile.write(cmd)
 
     if not jobfile.closed:
