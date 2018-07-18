@@ -51,6 +51,9 @@ def get_parser():
     parser.add_argument('-f','--file',
                         action   = 'store',
                         help     = 'file to process')
+    parser.add_argument('-rp','--reprocess',
+                        action   = 'store_true',
+                        help     = 'reprocess file')
     return parser
 
 

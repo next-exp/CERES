@@ -39,8 +39,11 @@ def config_files_1to1(files, args, paths, versions):
         fout = os.path.join(paths.output, filename_out)
         logging.debug("Output file: {}".format(fout))
         if os.path.isfile(fout):
-            logging.info("Skipping {}".format(fout))
-            continue
+            if(args.reprocess):
+                logging.info("Reprocessing {}".format(fout))
+            else:
+                logging.info("Skipping {}".format(fout))
+                continue
 
         params = {}
         if versions.version == 'prod':
