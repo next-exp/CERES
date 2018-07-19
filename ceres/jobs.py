@@ -160,9 +160,6 @@ def generate_jobs(configs, args, paths, versions):
 
 def close_job_file(jobfile, args, paths, count_jobs):
     jobfile.write('\n\necho date\ndate\n')
-    analysis_number = get_analysis_number(paths.output)
-    monitor_file = 'touch /analysis/spool/jobs/{}/{}/job_{}.txt\n'.format(args.run, analysis_number, count_jobs)
-    jobfile.write(monitor_file)
     jobfile.close()
 
 
@@ -180,9 +177,6 @@ def run_summary(jobs, args, paths, versions):
     base_path = base_path + str(analysis_number)
     if not os.path.isdir(base_path):
         os.makedirs(base_path)
-    count_file = base_path + '/job_counter.txt'
-    with open(count_file, 'w') as count:
-        count.write(str(len(jobs)) + '\n')
 
     template_py, template_sh = templates.summary_template()
     params = {'ic_tag': versions.ic,
