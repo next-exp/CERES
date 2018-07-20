@@ -150,7 +150,14 @@ def generate_jobs(configs, args, paths, versions):
         log_base = "{}/{}_{}_{}".format(paths.logs, args.city, args.run, count_jobs+offset-1)
         log_out = log_base + ".out"
         log_err = log_base + ".err"
-        cmd = 'city {} {} 1>{} 2>{}\n'.format(args.city, config, log_out, log_err)
+
+        config_template = templates.getTemplateFilename(args.city, args.type)
+        config_url = 'https://github.com/nextic/CERES/blob/{}/templates/{}'
+        config_url = config_url.format(versions.ceres, config_template)
+        #put config template in the log file
+        cmd = 'echo {} > {}\n'.format(config_url, log_out)
+        jobfile.write(cmd)
+        cmd = 'city {} {} 1>>{} 2>{}\n'.format(args.city, config, log_out, log_err)
         jobfile.write(cmd)
 
     if not jobfile.closed:
