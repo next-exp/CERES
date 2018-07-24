@@ -83,6 +83,10 @@ def get_input_path(args, version):
             path = scan_dirs(path, 'CERES')
         path = join(path, cities.inputs[args.city])
         check_dir(path, args)
+        #Scan for trigger version
+        if args.trigger:
+            path = join(path, "trigger{}".format(args.trigger))
+            check_dir(path, args)
     return path
 
 def scan_dirs(path, package):

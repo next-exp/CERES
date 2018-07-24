@@ -26,32 +26,55 @@ def config_files_1to1(files, args, paths, versions):
 
         filename     = f.split('/')[-1]
         fileno = utils.get_index_from_file_name(filename)
-        #filenames: '{city}_{fileno}_{run}_{ictag}_{certestag}_{configfile}.h5
+        #filenames: '{city}_{fileno}_{run}_[{trg1/2}]_{ictag}_{certestag}_{configfile}.h5
         new_name = [cities.outputs[args.city],
                     fileno,
                     args.run,
                     versions.ic,
                     versions.ceres,
                     versions.config]
-        filename_out = '_'.join(new_name) + '.h5'
+        #compute filenames and paths in case of dual mode
+        filenames_out = []
+        paths_out     = []
+        if args.dual or args.trigger:
+            new_name.insert(3, "trg")
+            triggers = list(range(2))
+            if args.trigger:
+                triggers = [int(args.trigger)-1]
+            for trg in triggers:
+                new_name[3] = "trg{}".format(trg+1)
+                filenames_out.append('_'.join(new_name) + '.h5')
+                paths_out.append(os.path.join(paths.output, "trigger{}".format(trg+1)))
+            list(map(utils.check_make_dir, paths_out))
+        else:
+            filenames_out.append('_'.join(new_name) + '.h5')
+            paths_out.append(paths.output)
+
+        # compute output file names
+        fouts = []
+        for outdir, fout in zip(paths_out, filenames_out):
+            fouts.append(os.path.join(outdir, fout))
 
         #if file already exists, skip
-        fout = os.path.join(paths.output, filename_out)
-        logging.debug("Output file: {}".format(fout))
-        if os.path.isfile(fout):
-            if(args.reprocess):
-                logging.info("Reprocessing {}".format(fout))
-            else:
-                logging.info("Skipping {}".format(fout))
-                continue
+        for fout in fouts:
+            logging.debug("Output file: {}".format(fout))
+            if os.path.isfile(fout):
+                if(args.reprocess):
+                    logging.info("Reprocessing {}".format(fout))
+                else:
+                    logging.info("Skipping {}".format(fout))
+                    continue
 
         params = {}
         if versions.version == 'prod':
-            params['pathin']  = '.'
-            params['pathout'] = '.'
-        params['filein' ] = os.path.join(paths.input, filename)
-        params['fileout'] = fout
-        params['run']     = args.run
+            params['pathin']   = '.'
+            params['pathout']  = '.'
+            params['pathout2'] = '.'
+        params['filein' ]  = os.path.join(paths.input, filename)
+        params['fileout']  = fouts[0]
+        if len(fouts) > 1:
+            params['fileout2'] = fouts[1]
+        params['run']      = args.run
 
         template = templates.get(args.city, args.type)
 
@@ -136,6 +159,8 @@ def generate_jobs(configs, args, paths, versions):
                 close_job_file(jobfile, args, paths, count_jobs)
 
             jobfilename = '{}_{}.sh'.format(args.city, count_jobs+offset)
+            if args.trigger:
+                jobfilename = '{}_{}_trg{}.sh'.format(args.city, count_jobs+offset, args.trigger)
             jobfilename = os.path.join(paths.jobs, jobfilename)
             to_submit.append(jobfilename)
             logging.debug("Creating {}".format(jobfilename))
@@ -148,6 +173,9 @@ def generate_jobs(configs, args, paths, versions):
             count_jobs += 1
 
         log_base = "{}/{}_{}_{}".format(paths.logs, args.city, args.run, count_jobs+offset-1)
+        if args.trigger:
+            log_base = "{}/{}_{}_{}_trg{}".format(paths.logs, args.city, args.run,
+                                            count_jobs+offset-1, args.trigger)
         log_out = log_base + ".out"
         log_err = log_base + ".err"
 

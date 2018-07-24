@@ -54,6 +54,12 @@ def get_parser():
     parser.add_argument('-rp','--reprocess',
                         action   = 'store_true',
                         help     = 'reprocess file')
+    parser.add_argument('-dual','--dual',
+                        action   = 'store_true',
+                        help     = 'dual trigger mode')
+    parser.add_argument('-trg','--trigger',
+                        action   = 'store',
+                        help     = 'trigger type')
     return parser
 
 
