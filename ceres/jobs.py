@@ -30,30 +30,27 @@ def config_files_1to1(files, args, paths, versions):
         new_name = [cities.outputs[args.city],
                     fileno,
                     args.run,
+                    "trg",
                     versions.ic,
                     versions.ceres,
                     versions.config]
         #compute filenames and paths in case of dual mode
         filenames_out = []
         paths_out     = []
-        if args.dual or args.trigger:
-            new_name.insert(3, "trg")
-            triggers = list(range(2))
-            if args.trigger:
-                triggers = [int(args.trigger)-1]
-            for trg in triggers:
-                new_name[3] = "trg{}".format(trg+1)
-                filenames_out.append('_'.join(new_name) + '.h5')
-                paths_out.append(os.path.join(paths.output, "trigger{}".format(trg+1)))
-            list(map(utils.check_make_dir, paths_out))
-        else:
+        for trg in range(2):
+            new_name[3] = "trg{}".format(trg+1)
             filenames_out.append('_'.join(new_name) + '.h5')
-            paths_out.append(paths.output)
+            paths_out.append(os.path.join(paths.output, "trigger{}".format(trg+1)))
+        list(map(utils.check_make_dir, paths_out))
 
         # compute output file names
         fouts = []
         for outdir, fout in zip(paths_out, filenames_out):
             fouts.append(os.path.join(outdir, fout))
+
+        # if args.trigger==2 the output file is the second one
+        if args.trigger == '2':
+            fouts.reverse()
 
         #if file already exists, skip
         for fout in fouts:
@@ -158,9 +155,7 @@ def generate_jobs(configs, args, paths, versions):
             if i: # write at the end of each file
                 close_job_file(jobfile, args, paths, count_jobs)
 
-            jobfilename = '{}_{}.sh'.format(args.city, count_jobs+offset)
-            if args.trigger:
-                jobfilename = '{}_{}_trg{}.sh'.format(args.city, count_jobs+offset, args.trigger)
+            jobfilename = '{}_{}_trg{}.sh'.format(args.city, count_jobs+offset, args.trigger)
             jobfilename = os.path.join(paths.jobs, jobfilename)
             to_submit.append(jobfilename)
             logging.debug("Creating {}".format(jobfilename))
@@ -172,10 +167,8 @@ def generate_jobs(configs, args, paths, versions):
             jobfile.write(template.format(**exec_params))
             count_jobs += 1
 
-        log_base = "{}/{}_{}_{}".format(paths.logs, args.city, args.run, count_jobs+offset-1)
-        if args.trigger:
-            log_base = "{}/{}_{}_{}_trg{}".format(paths.logs, args.city, args.run,
-                                            count_jobs+offset-1, args.trigger)
+        log_base = "{}/{}_{}_{}_trg{}".format(paths.logs, args.city, args.run,
+                                        count_jobs+offset-1, args.trigger)
         log_out = log_base + ".out"
         log_err = log_base + ".err"
 
@@ -183,7 +176,7 @@ def generate_jobs(configs, args, paths, versions):
         config_url = 'https://github.com/nextic/CERES/blob/{}/templates/{}'
         config_url = config_url.format(versions.ceres, config_template)
         #put config template in the log file
-        cmd = 'echo {} > {}\n'.format(config_url, log_out)
+        cmd = 'echo config_url = {} > {}\n'.format(config_url, log_out)
         jobfile.write(cmd)
         cmd = 'city {} {} 1>>{} 2>{}\n'.format(args.city, config, log_out, log_err)
         jobfile.write(cmd)
@@ -195,6 +188,7 @@ def generate_jobs(configs, args, paths, versions):
 
 def close_job_file(jobfile, args, paths, count_jobs):
     jobfile.write('\n\necho date\ndate\n')
+    jobfile.write('job finished\n')
     jobfile.close()
 
 
