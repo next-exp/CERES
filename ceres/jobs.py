@@ -180,6 +180,8 @@ def generate_jobs(configs, args, paths, versions):
         jobfile.write(cmd)
         cmd = 'city {} {} 1>>{} 2>{}\n'.format(args.city, config, log_out, log_err)
         jobfile.write(cmd)
+        cmd = 'echo "job finished" >> {}\n'.format(log_out)
+        jobfile.write(cmd)
 
     if not jobfile.closed:
         close_job_file(jobfile, args, paths, count_jobs)
@@ -188,7 +190,6 @@ def generate_jobs(configs, args, paths, versions):
 
 def close_job_file(jobfile, args, paths, count_jobs):
     jobfile.write('\n\necho date\ndate\n')
-    jobfile.write('job finished\n')
     jobfile.close()
 
 
