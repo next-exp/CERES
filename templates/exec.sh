@@ -1,6 +1,6 @@
 #!/bin/bash
 #PBS -N {jobname}
-#PBS -q long
+#PBS -q short
 #PBS -o {jobout}
 #PBS -e {joberr}
 #PBS -M jmbenlloch@ific.uv.es

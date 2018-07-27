@@ -32,7 +32,8 @@ templates = {
         'alpha'     : 'dorothea_alpha.conf'
     },
     'penthesilea' : {
-        'bg2000'    : 'penthesilea_bg.conf'
+        'bg2000'    : 'penthesilea_bg.conf',
+        'th'        : 'penthesilea_228Th.conf'
     }
 }
 
