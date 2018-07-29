@@ -49,8 +49,8 @@ def list_input_files(paths):
     files = sorted(files, key=get_index_from_file_name)
     return files
 
-def get_input_file(paths,ifile):
-    return glob(paths.input + '/*{:04d}*h5'.format(int(ifile)))
+def get_input_file(paths, run, ifile):
+    return glob(paths.input + '/*{}_{:04d}*h5'.format(run, int(ifile)))
 
 def get_input_path(args, version):
     path = '/analysis/{}/hdf5/'.format(args.run)

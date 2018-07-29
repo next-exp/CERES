@@ -112,7 +112,7 @@ old_jobs = os.path.join(paths.jobs, args.city + '*sh')
 map(os.remove, glob(old_jobs))
 
 #input files
-if  args.file: files =  utils.get_input_file(paths,args.file)
+if  args.file: files =  utils.get_input_file(paths, args.run, args.file)
 else: files = utils.list_input_files(paths)
 
 #generate configs files
