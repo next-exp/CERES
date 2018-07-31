@@ -92,7 +92,15 @@ base_dir = '/analysis/{}/hdf5/{}/{}/{}/'.format(args.run,
 path_out = base_dir + cities.outputs[args.city] + '/'
 configs  = base_dir + 'configs/'
 jobs_dir = base_dir + 'jobs/'
-logs_dir = base_dir + 'logs/' + cities.outputs[args.city] + '/'
+logs_dir = base_dir + 'logs/' + cities.outputs[args.city] + '/trigger'
+
+#create logs dir for trigger1 and trigger2
+logs_dirs = []
+for trg in range(1,3):
+    tmp = logs_dir + str(trg)
+    logs_dirs.append(tmp)
+    utils.check_make_dir(tmp)
+logs_dir = logs_dirs[int(args.trigger)-1]
 
 paths = data.Paths(input   = path_in,
                    output  = path_out,
