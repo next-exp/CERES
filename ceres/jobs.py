@@ -38,7 +38,7 @@ def config_files_1to1(files, args, paths, versions):
         filenames_out = []
         paths_out     = []
         for trg in range(2):
-            new_name[3] = "trg{}".format(trg+1)
+            new_name[3] = "trigger{}".format(trg+1)
             filenames_out.append('_'.join(new_name) + '.h5')
             paths_out.append(os.path.join(paths.output, "trigger{}".format(trg+1)))
         list(map(utils.check_make_dir, paths_out))
@@ -155,7 +155,7 @@ def generate_jobs(configs, args, paths, versions):
             if i: # write at the end of each file
                 close_job_file(jobfile, args, paths, count_jobs)
 
-            jobfilename = '{}_{}_trg{}.sh'.format(args.city, count_jobs+offset, args.trigger)
+            jobfilename = '{}_{}_trigger{}.sh'.format(args.city, count_jobs+offset, args.trigger)
             jobfilename = os.path.join(paths.jobs, jobfilename)
             to_submit.append(jobfilename)
             logging.debug("Creating {}".format(jobfilename))
@@ -167,7 +167,7 @@ def generate_jobs(configs, args, paths, versions):
             jobfile.write(template.format(**exec_params))
             count_jobs += 1
 
-        log_base = "{}/{}_{}_{}_trg{}".format(paths.logs, args.city, args.run,
+        log_base = "{}/{}_{}_{}_trigger{}".format(paths.logs, args.city, args.run,
                                         count_jobs+offset-1, args.trigger)
         log_out = log_base + ".out"
         log_err = log_base + ".err"
