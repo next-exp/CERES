@@ -92,7 +92,7 @@ base_dir = '/analysis/{}/hdf5/{}/{}/{}/'.format(args.run,
 path_out = base_dir + cities.outputs[args.city] + '/'
 configs  = base_dir + 'configs/'
 jobs_dir = base_dir + 'jobs/'
-logs_dir = base_dir + 'logs/'
+logs_dir = base_dir + 'logs/' + cities.outputs[args.city] + '/'
 
 paths = data.Paths(input   = path_in,
                    output  = path_out,
