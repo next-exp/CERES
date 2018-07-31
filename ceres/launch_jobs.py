@@ -107,10 +107,6 @@ logging.info("{} output files will be in {}".format(cities.outputs[args.city],
 #check and make dirs
 list(map(utils.check_make_dir, paths))
 
-#remove old jobs
-old_jobs = os.path.join(paths.jobs, args.city + '*sh')
-map(os.remove, glob(old_jobs))
-
 #input files
 if  args.file: files =  utils.get_input_file(paths, args.run, args.city, args.file)
 else: files = utils.list_input_files(paths)
