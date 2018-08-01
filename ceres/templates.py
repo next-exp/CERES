@@ -18,6 +18,7 @@ templates = {
         'th2000'    : 'irene_th_s2_2000.conf'    ,
         'th1300'    : 'irene_th_s2_1300.conf'    ,
         'bg2000'    : 'irene_bg_s2_2000.conf'    ,
+        'krbg1300'  : 'irene_krbg_s2_1300.conf'    ,
         'alpha_s1'  : 'irene_alpha_s1.conf'      ,
         'alpha_s2'  : 'irene_alpha_s2.conf'      ,
         'test'      : 'irene_test.conf'
@@ -32,7 +33,7 @@ templates = {
         'alpha'     : 'dorothea_alpha.conf'
     },
     'penthesilea' : {
-        'bg2000'    : 'penthesilea_bg.conf',
+        'bg'    : 'penthesilea_bg.conf',
         'th'        : 'penthesilea_228Th.conf'
     }
 }
