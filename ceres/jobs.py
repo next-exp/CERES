@@ -75,7 +75,8 @@ def config_files_1to1(files, args, paths, versions):
 
         template = templates.get(args.city, args.type)
 
-        config_file = os.path.join(paths.configs, filename + '.conf')
+        #config_file = os.path.join(paths.configs, filename + '.conf')
+        config_file = os.path.join(paths.configs,filename+'.'+(args.city)+'.conf')
         open (config_file, 'w').write(template.format(**params))
         logging.debug("Creating {}".format(config_file))
 
