@@ -27,6 +27,7 @@ templates = {
         'csexample' : 'dorothea_example.conf',
         'kr'        : 'dorothea_kr.conf',
         'krth'      : 'dorothea_krth.conf',
+        'krbg'      : 'dorothea_krbg.conf',
         'na_s1'     : 'dorothea_na.conf',
         'cs2000'    : 'dorothea_cs.conf',
         'th2000'    : 'dorothea_th.conf',
