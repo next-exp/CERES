@@ -116,7 +116,7 @@ logging.info("{} output files will be in {}".format(cities.outputs[args.city],
 list(map(utils.check_make_dir, paths))
 
 #input files
-if  args.file: files =  utils.get_input_file(paths, args.run, args.city, args.file)
+if  args.file: files =  utils.get_input_file(paths, args.run, args.city, args.file, args.trigger)
 else: files = utils.list_input_files(paths)
 
 #generate configs files

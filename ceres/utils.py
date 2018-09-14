@@ -49,9 +49,23 @@ def list_input_files(paths):
     files = sorted(files, key=get_index_from_file_name)
     return files
 
-def get_input_file(paths, run, city, ifile):
+def get_input_file(paths, run, city, ifile, trigger):
     if city == 'irene':
-        return glob(paths.input + '/*{}_{:04d}*h5'.format(run, int(ifile)))
+        basename = 'run_{}_{:04d}_trigger{}_waveforms.h5'.format(run, int(ifile),
+                                                                 trigger)
+        filename = paths.input + '/' + basename
+        filenames = [filename]
+        # Try older name version if trigger does not exist
+        if not os.path.isfile(filename):
+            basename = 'run_{}_{:04d}_waveforms.h5'.format(run, int(ifile))
+            filename = paths.input + '/' + basename
+            filenames = [filename]
+
+        # If name the pattern does not match, just try glob
+        if not os.path.isfile(filename):
+            filenames = glob(paths.input + '/*{}_{:04d}*h5'.format(run, int(ifile)))
+
+        return filenames
     else:
         return glob(paths.input + '/*{:04d}_{}*h5'.format(int(ifile), run))
 
@@ -88,7 +102,6 @@ def get_input_path(args, version):
         check_dir(path, args)
         #Scan for trigger version (by default trigger 1)
         path = join(path, "trigger{}".format(args.trigger))
-        print(path)
         check_dir(path, args)
     return path
 
