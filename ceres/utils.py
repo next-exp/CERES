@@ -25,11 +25,11 @@ def find_pattern_in_file(pattern, fname, group_name):
     return result
 
 def check_make_dir(path):
-    if os.path.isdir(path):
-        logging.debug('directory already exists!: ' + path)
-    else:
+    try:
         os.makedirs(path)
         logging.debug('creating directory: ' + path)
+    except FileExistsError:
+        logging.debug('directory already exists!: ' + path)
 
 def get_index_from_file_name(name):
     if "pmaps" in name:
