@@ -206,8 +206,7 @@ def run_summary(jobs, args, paths, versions):
     base_path = '/analysis/spool/jobs/' + args.run + '/'
     analysis_number = get_analysis_number(paths.output)
     base_path = base_path + str(analysis_number)
-    if not os.path.isdir(base_path):
-        os.makedirs(base_path)
+    utils.check_make_dir(base_path)
 
     template_py, template_sh = templates.summary_template()
     params = {'ic_tag': versions.ic,
