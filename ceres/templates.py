@@ -15,10 +15,12 @@ templates = {
         'na_s1'     : 'irene_na_s1.conf'         ,
         'cs2000'    : 'irene_cs_s2_2000.conf'    ,
         'krth1300'  : 'irene_krth_s2_1300.conf'  ,
+        'krth1600'  : 'irene_krth_s2_1600.conf'  ,
         'th2000'    : 'irene_th_s2_2000.conf'    ,
         'th1300'    : 'irene_th_s2_1300.conf'    ,
         'bg2000'    : 'irene_bg_s2_2000.conf'    ,
         'krbg1300'  : 'irene_krbg_s2_1300.conf'    ,
+        'krbg1600'  : 'irene_krbg_s2_1600.conf'    ,
         'alpha_s1'  : 'irene_alpha_s1.conf'      ,
         'alpha_s2'  : 'irene_alpha_s2.conf'      ,
         'test'      : 'irene_test.conf'
