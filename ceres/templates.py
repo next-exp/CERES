@@ -23,7 +23,8 @@ templates = {
         'krbg1600'  : 'irene_krbg_s2_1600.conf'    ,
         'alpha_s1'  : 'irene_alpha_s1.conf'      ,
         'alpha_s2'  : 'irene_alpha_s2.conf'      ,
-        'test'      : 'irene_test.conf'
+        'test'      : 'irene_test.conf'          ,
+        'demo-kr'   : 'irene_kr-demo.conf'
     },
     'dorothea' : {
         'csexample' : 'dorothea_example.conf',
@@ -33,7 +34,8 @@ templates = {
         'na_s1'     : 'dorothea_na.conf',
         'cs2000'    : 'dorothea_cs.conf',
         'th2000'    : 'dorothea_th.conf',
-        'alpha'     : 'dorothea_alpha.conf'
+        'alpha'     : 'dorothea_alpha.conf',
+        'demo-kdst' : 'dorothea_kr-demo.conf'
     },
     'penthesilea' : {
         'bg'    : 'penthesilea_bg.conf',
