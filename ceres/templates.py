@@ -27,7 +27,10 @@ templates = {
         'demo-kr'          : 'irene_kr-demo.conf'       ,
         'demo-kr1200'      : 'irene_kr-demo_s2_1200.conf',
         'demo-kr800'       : 'irene_kr-demo_s2_800.conf',
-        'demo-kr800-sipm2' : 'irene_kr-demo_s2_800-thr_sipmS2_2.conf'
+        'demo-kr800-sipm2' : 'irene_kr-demo_s2_800-thr_sipmS2_2.conf',
+        'demo-kr800-sipm3' : 'irene_kr-demo_s2_800-thr_sipmS2_3.conf',
+        'demo-kr800-sipm4' : 'irene_kr-demo_s2_800-thr_sipmS2_4.conf'
+        'demo-kr800-sipm8' : 'irene_kr-demo_s2_800-thr_sipmS2_8.conf'
     },
     'dorothea' : {
         'csexample' : 'dorothea_example.conf',
