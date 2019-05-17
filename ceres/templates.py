@@ -29,7 +29,7 @@ templates = {
         'demo-kr800'       : 'irene_kr-demo_s2_800.conf',
         'demo-kr800-sipm2' : 'irene_kr-demo_s2_800-thr_sipmS2_2.conf',
         'demo-kr800-sipm3' : 'irene_kr-demo_s2_800-thr_sipmS2_3.conf',
-        'demo-kr800-sipm4' : 'irene_kr-demo_s2_800-thr_sipmS2_4.conf'
+        'demo-kr800-sipm4' : 'irene_kr-demo_s2_800-thr_sipmS2_4.conf',
         'demo-kr800-sipm8' : 'irene_kr-demo_s2_800-thr_sipmS2_8.conf'
     },
     'dorothea' : {
@@ -44,9 +44,10 @@ templates = {
         'demo-kdst' : 'dorothea_kr-demo.conf'
     },
     'penthesilea' : {
-        'bg'         : 'penthesilea_bg.conf',
-        'th'         : 'penthesilea_228Th.conf',
-        'demo-kr-pen' : 'penthesilea_kr-demo.conf'
+        'bg'               : 'penthesilea_bg.conf',
+        'th'               : 'penthesilea_228Th.conf',
+        'demo-kr-pen-tra'  : 'penthesilea_kr-demo.conf',
+        'demo-kr-pen-long' : 'penthesilea_kr-demo-longitudinal.conf'
     }
 }
 
