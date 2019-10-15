@@ -16,6 +16,7 @@ templates = {
         'cs2000'    : 'irene_cs_s2_2000.conf'    ,
         'krth1300'  : 'irene_krth_s2_1300.conf'  ,
         'krth1600'  : 'irene_krth_s2_1600.conf'  ,
+        'krth3200'  : 'irene_krth_s2_3200.conf'  ,
         'th2000'    : 'irene_th_s2_2000.conf'    ,
         'th1300'    : 'irene_th_s2_1300.conf'    ,
         'bg2000'    : 'irene_bg_s2_2000.conf'    ,
@@ -23,7 +24,9 @@ templates = {
         'krbg1600'  : 'irene_krbg_s2_1600.conf'    ,
         'alpha_s1'  : 'irene_alpha_s1.conf'      ,
         'alpha_s2'  : 'irene_alpha_s2.conf'      ,
-        'test'      : 'irene_test.conf'
+        'test'      : 'irene_test.conf',
+        'krhighrate'      : 'irene_high_kr_rate.conf',
+        'autotrigger'  : 'irene_autotrigger_1600.conf'
     },
     'dorothea' : {
         'csexample' : 'dorothea_example.conf',
@@ -33,12 +36,18 @@ templates = {
         'na_s1'     : 'dorothea_na.conf',
         'cs2000'    : 'dorothea_cs.conf',
         'th2000'    : 'dorothea_th.conf',
-        'alpha'     : 'dorothea_alpha.conf'
+        'alpha'     : 'dorothea_alpha.conf',
+        'krhighrate'     : 'dorothea_high_kr_rate.conf',
+        'autotrigger'    : 'dorothea_autotrigger.conf',
     },
     'penthesilea' : {
         'bg'    : 'penthesilea_bg.conf',
         'th'        : 'penthesilea_228Th.conf'
+    },
+    'esmeralda' : {
+        'bg'    : 'esmeralda_bg.conf'
     }
+    
 }
 
 def get_dir(version):
