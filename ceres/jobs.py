@@ -98,13 +98,34 @@ def config_files_allto1(files, args, paths, versions):
                 versions.ceres,
                 versions.config]
     filename_out = '_'.join(new_name) + '.h5'
+    
+    #compute filenames and paths in case of dual mode
+    filenames_out = []
+    paths_out     = []
+    for trg in range(2):
+        new_name[3] = "trigger{}".format(trg+1)
+        filenames_out.append('_'.join(new_name) + '.h5')
+        paths_out.append(os.path.join(paths.output, "trigger{}".format(trg+1)))
+    list(map(utils.check_make_dir, paths_out))
+
+    # compute output file names
+    fouts = []
+    for outdir, fout in zip(paths_out, filenames_out):
+        fouts.append(os.path.join(outdir, fout))
+
+    # if args.trigger==2 the output file is the second one
+    if args.trigger == '2':
+        fouts.reverse()
 
     params = {}
     if versions.version == 'prod':
         params['pathin']  = '.'
         params['pathout'] = '.'
     params['filein' ] = os.path.join(paths.input, '*h5')
-    params['fileout'] = os.path.join(paths.output, filename_out)
+    params['fileout']  = fouts[0]
+    if len(fouts) > 1:
+        params['fileout2'] = fouts[1]
+    #params['fileout'] = os.path.join(paths.output, filename_out)
     logging.debug("Output file: {}".format(params['fileout']))
     params['run']     = args.run
 
