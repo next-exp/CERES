@@ -27,16 +27,23 @@ templates = {
         'test'      : 'irene_test.conf'          ,
         'demo-kr'          : 'irene_kr-demo.conf'       ,
         'demo-kr1200'      : 'irene_kr-demo_s2_1200.conf',
+        'demo-kr900 '      : 'irene_kr-demo_s2_900.conf',
         'demo-kr800'       : 'irene_kr-demo_s2_800.conf',
         'demo-kr800-sipm2' : 'irene_kr-demo_s2_800-thr_sipmS2_2.conf',
         'demo-kr800-sipm3' : 'irene_kr-demo_s2_800-thr_sipmS2_3.conf',
         'demo-kr800-sipm4' : 'irene_kr-demo_s2_800-thr_sipmS2_4.conf',
         'demo-kr800-sipm8' : 'irene_kr-demo_s2_800-thr_sipmS2_8.conf',
         'demo-kr800-allT'  : 'irene_kr-demo_s2_800-allT.conf',
-        'demo-kr800-25ns'  : 'irene_kr-demo_s2_800-25ns.conf'
-        'test'      : 'irene_test.conf',
-        'krhighrate'      : 'irene_high_kr_rate.conf',
-        'autotrigger'  : 'irene_autotrigger_1600.conf'
+        'demo-kr800-S2-399': 'irene_kr-demo_s2_800-S2-399.conf',
+        'demo-kr800-25ns'  : 'irene_kr-demo_s2_800-25ns.conf',
+        'demo-kr1000_pre400':'irene_kr-demo_s2_1000_pre400.conf',
+        'demo-kr1000_pre400_corrDB':'irene_kr-demo_s2_1000_pre400_corrDB.conf',
+        'demo-kr1000_pre400_bs39999':'irene_kr-demo_s2_1000_pre400_bl39999.conf',
+        'demo-kr1200_pre400':'irene_kr-demo_s2_1200_pre400.conf',
+        'demo-kr1000_pre400_sipm1':'irene_kr-demo_s2_1000_pre400_sipm1.conf',
+        'test'             : 'irene_test.conf',
+        'krhighrate'       : 'irene_high_kr_rate.conf',
+        'autotrigger'      : 'irene_autotrigger_1600.conf'
     },
     'dorothea' : {
         'csexample' : 'dorothea_example.conf',
@@ -54,16 +61,13 @@ templates = {
         'th'                    : 'penthesilea_228Th.conf',
         'demo-kr-pen-tra'       : 'penthesilea_kr-demo.conf',
         'demo-kr-pen-long'      : 'penthesilea_kr-demo-longitudinal.conf',
-        'demo-kr-pen-long-25ns' : 'penthesilea_kr-demo-longitudinal-25ns.conf'
-        'krhighrate'     : 'dorothea_high_kr_rate.conf',
-        'autotrigger'    : 'dorothea_autotrigger.conf',
-    },
-    'penthesilea' : {
-        'bg'    : 'penthesilea_bg.conf',
-        'th'        : 'penthesilea_228Th.conf'
+        'demo-kr-pen-long-25ns' : 'penthesilea_kr-demo-longitudinal-25ns.conf',
+        'krhighrate'            : 'dorothea_high_kr_rate.conf',
+        'autotrigger'           : 'dorothea_autotrigger.conf'
     },
     'esmeralda' : {
-        'bg'    : 'esmeralda_bg.conf'
+        'bg'    : 'esmeralda_bg.conf',
+        'th'    : 'esmeralda_th.conf'
     }
     
 }
