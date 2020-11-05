@@ -41,6 +41,7 @@ templates = {
         'demo-kr1000_pre400_bs39999':'irene_kr-demo_s2_1000_pre400_bl39999.conf',
         'demo-kr1200_pre400':'irene_kr-demo_s2_1200_pre400.conf',
         'demo-kr1000_pre400_sipm1':'irene_kr-demo_s2_1000_pre400_sipm1.conf',
+        'demo-s1-1300_pre400' : 'irene_kr-demo_s2_1300_pre400_s1.conf'
         'test'             : 'irene_test.conf',
         'krhighrate'       : 'irene_high_kr_rate.conf',
         'autotrigger'      : 'irene_autotrigger_1600.conf'
