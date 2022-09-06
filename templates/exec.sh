@@ -8,7 +8,7 @@
 echo date
 date
 source /software/miniconda3_dev/etc/profile.d/conda.sh
-export ICTDIR=/software/IC-v1.2.0
+export ICTDIR=/software/IC
 export ICDIR=$ICTDIR/invisible_cities
 export PATH="$ICTDIR/bin:$PATH"
 export PYTHONPATH=$ICTDIR:$PYTHONPATH
