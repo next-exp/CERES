@@ -39,36 +39,51 @@ def get_index_from_file_name(name):
     return find_pattern(pattern, name, 'fileno')
 
 def get_index_from_file_name(name):
-    if "pmaps" in name:
-        return name.split("/")[-1].split("_")[1]
-    else:
-        return name.split("/")[-1].split("_")[2]
+    #if "pmaps" in name:
+    return name.split("/")[-1].split("_")[2]
+    #else:
+    #    return name.split("/")[-1].split("_")[2]
 
+def get_ldc_from_file_name(name):
+    #if "pmaps" in name:
+    return name.split("/")[-1].split("_")[3][3]
+    
 def list_input_files(paths):
     files = glob(paths.input + '/*h5')
     files = sorted(files, key=get_index_from_file_name)
     return files
 
-def get_input_file(paths, run, city, ifile, trigger):
-    if city == 'irene':
-        basename = 'run_{}_{:04d}_trigger{}_waveforms.h5'.format(run, int(ifile),
-                                                                 trigger)
+def get_input_file(paths, run, city, ifile, ldc, trigger):
+    if city in ['irene','hypathia']:
+        basename = 'run_{}_{:04d}_ldc{}_trg{}.waveforms.h5'.format(run, int(ifile),
+                                                                   ldc,trigger)
         filename = paths.input + '/' + basename
         filenames = [filename]
         # Try older name version if trigger does not exist
-        if not os.path.isfile(filename):
-            basename = 'run_{}_{:04d}_waveforms.h5'.format(run, int(ifile))
-            filename = paths.input + '/' + basename
-            filenames = [filename]
+        #if not os.path.isfile(filename):
+        #    basename = 'run_{}_{:04d}_waveforms.h5'.format(run, int(ifile))
+        #    filename = paths.input + '/' + basename
+        #    filenames = [filename]
 
         # If name the pattern does not match, just try glob
-        if not os.path.isfile(filename):
-            filenames = glob(paths.input + '/*{}_{:04d}*h5'.format(run, int(ifile)))
+        #if not os.path.isfile(filename):
+        #    filenames = glob(paths.input + '/*{}_{:04d}*h5'.format(run, int(ifile)))
 
         return filenames
     else:
-        return glob(paths.input + '/*{:04d}_{}*h5'.format(int(ifile), run))
+        return glob(paths.input+'/run_{}_{:04d}_ldc{}_trg{}.*.*.h5'.format(run,int(ifile),ldc,trigger))
 
+def get_input_files_ldc(paths, run, city, ifile, trigger):
+    
+    if city in ['irene','hypathia']:
+        basename = 'run_{}_{:04d}_ldc*_trg{}.waveforms.h5'.format(run, int(ifile),trigger)
+        return glob(paths.input + '/'+basename)
+    else:
+        logging.error('Not implemented yet')
+        exit(-1)
+    
+    return
+    
 def get_input_path(args, version):
     path = '/analysis/{}/hdf5/'.format(args.run)
     if not os.path.isdir(path):
@@ -82,12 +97,12 @@ def get_input_path(args, version):
 
     # Irene always takes the same files while the rest of the cities
     # could take different versions of the pmaps
-    if args.city == 'irene':
+    if args.city in ['irene','hypathia']:
         path = join(path, 'data')
     else:
         path = join(path, version)
         check_dir(path, args)
-        #Scan for IC versions
+       #Scan for IC versions
         if args.ic_tag:
             path = join(path, args.ic_tag)
         else:

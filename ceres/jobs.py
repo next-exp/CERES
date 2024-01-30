@@ -24,59 +24,68 @@ def config_files_1to1(files, args, paths, versions):
         if ftype.from_file(f) == 'data':
             continue
 
-        filename     = f.split('/')[-1]
-        fileno = utils.get_index_from_file_name(filename)
-        #filenames: '{city}_{fileno}_{run}_[{trg1/2}]_{ictag}_{certestag}_{configfile}.h5
-        new_name = [cities.outputs[args.city],
-                    fileno,
-                    args.run,
-                    "trg",
-                    versions.ic,
-                    versions.ceres,
-                    versions.config]
-        #compute filenames and paths in case of dual mode
-        filenames_out = []
-        paths_out     = []
-        for trg in range(2):
-            new_name[3] = "trigger{}".format(trg+1)
-            filenames_out.append('_'.join(new_name) + '.h5')
-            paths_out.append(os.path.join(paths.output, "trigger{}".format(trg+1)))
-        list(map(utils.check_make_dir, paths_out))
+        ###-------
+        # filename     = f.split('/')[-1]
+        # fileno = utils.get_index_from_file_name(filename)
+        # #filenames: '{city}_{fileno}_{run}_[{trg1/2}]_{ictag}_{certestag}_{configfile}.h5
+        # new_name = [cities.outputs[args.city],
+        #             args.run,
+        #             fileno,
+        #             "trg",
+        #             versions.ic,
+        #             versions.ceres,
+        #             versions.config]
+        # #compute filenames and paths in case of dual mode
+        # filenames_out = []
+        # paths_out     = []
+        # for trg in range(2):
+        #     new_name[3] = "trigger{}".format(trg+1)
+        #     filenames_out.append('_'.join(new_name) + '.h5')
+        #     paths_out.append(os.path.join(paths.output, "trigger{}".format(trg+1)))
+        # list(map(utils.check_make_dir, paths_out))
 
-        # compute output file names
-        fouts = []
-        for outdir, fout in zip(paths_out, filenames_out):
-            fouts.append(os.path.join(outdir, fout))
+        # # compute output file names
+        # fouts = []
+        # for outdir, fout in zip(paths_out, filenames_out):
+        #     fouts.append(os.path.join(outdir, fout))
 
-        # if args.trigger==2 the output file is the second one
-        if args.trigger == '2':
-            fouts.reverse()
+        # # if args.trigger==2 the output file is the second one
+        # if args.trigger == '2':
+        #     fouts.reverse()
+        ###-------
 
+        fout = 'run_{}_{:04d}_ldc{}_trg{}.{}.{}.{}.{}.h5'.format(args.run,int(args.file),
+                                                                 args.ldc,args.trigger,
+                                                                 versions.ic,versions.ceres,
+                                                                 versions.config,
+                                                                 args.city)
+        pout = os.path.join(paths.output,'trigger{}'.format(args.trigger))
+        utils.check_make_dir(pout)
+        
         #if file already exists, skip
-        for fout in fouts:
-            logging.debug("Output file: {}".format(fout))
-            if os.path.isfile(fout):
-                if(args.reprocess):
-                    logging.info("Reprocessing {}".format(fout))
-                else:
-                    logging.info("Skipping {}".format(fout))
-                    continue
-
+        #for fout in fouts:
+        logging.info("Output file: {}".format(fout))
+        if os.path.isfile(os.path.join(pout,fout)):
+            if(args.reprocess):
+                logging.info("Reprocessing {}".format(fout))
+            else:
+                logging.info("Skipping {}: reprocessing not allowed".format(fout))
+                continue
+        
         params = {}
         if versions.version == 'prod':
             params['pathin']   = '.'
             params['pathout']  = '.'
             params['pathout2'] = '.'
-        params['filein' ]  = os.path.join(paths.input, filename)
-        params['fileout']  = fouts[0]
-        if len(fouts) > 1:
-            params['fileout2'] = fouts[1]
+        params['filein' ]  = os.path.join(paths.input, os.path.basename(f))
+        params['fileout']  = os.path.join(pout,fout) #fouts[0]
+        #if len(fouts) > 1:
+        #    params['fileout2'] = fouts[1]
         params['run']      = args.run
 
         template = templates.get(args.city, args.type)
 
-        #config_file = os.path.join(paths.configs, filename + '.conf')
-        config_file = os.path.join(paths.configs,filename+'.'+(args.city)+'.conf')
+        config_file = os.path.join(paths.configs,os.path.basename(f)+'.'+(args.city)+'.conf')
         open (config_file, 'w').write(template.format(**params))
         logging.debug("Creating {}".format(config_file))
 
@@ -177,7 +186,9 @@ def generate_jobs(configs, args, paths, versions):
             if i: # write at the end of each file
                 close_job_file(jobfile, args, paths, count_jobs)
 
-            jobfilename = '{}_{}_trigger{}.sh'.format(args.city, count_jobs+offset, args.trigger)
+            jobfilename = '{}_{}_ldc{}_trigger{}.sh'.format(args.city,count_jobs+offset,
+                                                            args.ldc,args.trigger)
+            
             jobfilename = os.path.join(paths.jobs, jobfilename)
             to_submit.append(jobfilename)
             logging.debug("Creating {}".format(jobfilename))
@@ -189,8 +200,8 @@ def generate_jobs(configs, args, paths, versions):
             jobfile.write(template.format(**exec_params))
             count_jobs += 1
 
-        log_base = "{}/{}_{}_{}_trigger{}".format(paths.logs, args.city, args.run,
-                                        count_jobs+offset-1, args.trigger)
+        log_base = "{}/{}_{}_{}_ldc{}_trigger{}".format(paths.logs, args.city, args.run,
+                                                  count_jobs+offset-1, args.ldc,args.trigger)
         log_out = log_base + ".out"
         log_err = log_base + ".err"
 

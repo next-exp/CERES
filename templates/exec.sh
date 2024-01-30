@@ -7,11 +7,10 @@
 
 echo date
 date
-source /software/miniconda3_dev/etc/profile.d/conda.sh
-export ICTDIR=/software/IC
+source /data/software/miniconda/etc/profile.d/conda.sh
+export ICTDIR=/data/software/IC
 export ICDIR=$ICTDIR/invisible_cities
 export PATH="$ICTDIR/bin:$PATH"
 export PYTHONPATH=$ICTDIR:$PYTHONPATH
 export OMP_NUM_THREADS=1
-#conda activate IC-3.7-2018-11-14
-conda activate IC-3.7-2020-06-16
+conda activate IC-3.8-2022-04-13

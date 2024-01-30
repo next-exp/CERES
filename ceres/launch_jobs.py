@@ -51,6 +51,10 @@ def get_parser():
     parser.add_argument('-f','--file',
                         action   = 'store',
                         help     = 'file to process')
+    parser.add_argument('-l','--ldc',
+                        action   = 'store',
+                        default   = 0,
+                        help     = 'ldc to process')
     parser.add_argument('-rp','--reprocess',
                         action   = 'store_true',
                         help     = 'reprocess file')
@@ -116,7 +120,10 @@ logging.info("{} output files will be in {}".format(cities.outputs[args.city],
 list(map(utils.check_make_dir, paths))
 
 #input files
-if  args.file: files =  utils.get_input_file(paths, args.run, args.city, args.file, args.trigger)
+if  args.file and args.ldc:
+    files =  utils.get_input_file(paths, args.run, args.city, args.file, args.ldc, args.trigger)
+elif args.file:
+    files =  utils.get_input_files_ldc(paths, args.run, args.city, args.file, args.trigger)
 else: files = utils.list_input_files(paths)
 
 #generate configs files

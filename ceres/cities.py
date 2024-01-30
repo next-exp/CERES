@@ -1,18 +1,21 @@
 #output dirs for cities
-outputs = {'irene'       : 'pmaps',
-           'dorothea'    : 'kdst',
-           'penthesilea' : 'hdst',
-           'esmeralda'   : 'cdst'}
+outputs = {'hypathia'    : 'irene', # testing/debugging with MC
+           'irene'       : 'irene',
+           'dorothea'    : 'dorothea',
+           'sophronia' : 'sophronia',
+           'esmeralda'   : 'esmeralda'}
 
 # Wether to use generate one job per input file (1to1)
 # or one job for all input files
-configs = {'irene'       : '1to1',
+configs = {'hypathia'    : '1to1', # testing/debugging with MC
+           'irene'       : '1to1',
            'dorothea'    : '1to1',
-           'penthesilea' : '1to1',
+           'sophronia' : '1to1',
            'esmeralda'   : 'allto1'}
 
 #input dirs for cities
-inputs = {'irene'       : 'data',
+inputs = {'hypathia'       : 'data', # testing/debugging with MC
+          'irene'       : 'data',
           'dorothea'    : outputs['irene'],
-          'penthesilea' : outputs['irene'],
-          'esmeralda' : outputs['penthesilea']}
+          'sophronia' : outputs['irene'],
+          'esmeralda' : outputs['sophronia']}
