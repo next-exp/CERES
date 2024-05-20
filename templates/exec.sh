@@ -3,6 +3,7 @@
 #PBS -q short
 #PBS -o {jobout}
 #PBS -e {joberr}
+#PBS -l mem=5gb
 #PBS -M jmbenlloch@ific.uv.es
 
 echo date
