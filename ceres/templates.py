@@ -5,10 +5,15 @@ from ceres import versions
 
 templates = {
     'hypathia':   {'hypathia_def' : 'hypathia_def.conf'},
-    'irene' :     {'irene_def'    : 'irene_def.conf'},
-    'dorothea' :  {'dorothea_def' : 'dorothea_def.conf'},
-    'sophronia' : {'sophronia_def': 'sophronia_def.conf'},
-    'esmeralda' : {'esmeralda_def': 'esmeralda_def.conf'}
+    'irene' :     {'irene_def'    : 'irene_def.conf',
+                   'ArConf'       : 'irene_Ar.conf'},
+    'dorothea' :  {'dorothea_def' : 'dorothea_def.conf',
+                   'ArConf'       : 'dorothea_Ar.conf'},
+    'sophronia' : {'sophronia_def': 'sophronia_def.conf',
+                   'ArConf'       : 'sophronia_Ar.conf'},
+    'esmeralda' : {'esmeralda_def': 'esmeralda_def.conf',
+                   'ArConf'       : 'esmeralda_Ar.conf'}
+
 }
 
 def get_dir(version):
