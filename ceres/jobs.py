@@ -213,6 +213,9 @@ def generate_jobs(configs, args, paths, versions):
         jobfile.write(cmd)
         cmd = 'city {} {} 1>>{} 2>{}\n'.format(args.city, config, log_out, log_err)
         jobfile.write(cmd)
+        output_file = utils.find_pattern_in_file('file_out(.*)=(.*)"(?P<fileout>.+h5)"', config, "fileout")
+        cmd = '\n/data/software/lscAutoCopy/bin/sendJob -user next -pass next -srv services1next -job {} -config {} -file {} -log {} -err {}\n'.format(jobfilename, config, output_file, log_out, log_err)
+        jobfile.write(cmd)
         cmd = 'echo "job finished" >> {}\n'.format(log_out)
         jobfile.write(cmd)
 
