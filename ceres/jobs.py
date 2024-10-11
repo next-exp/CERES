@@ -168,7 +168,8 @@ def generate_jobs(configs, args, paths, versions):
     template = templates.exec_template()
     exec_params = {'jobname': 'to_be_filled',
                    'jobout' : '/dev/null',
-                   'joberr' : '/dev/null'}
+                   'joberr' : '/dev/null',
+                   'mem'    : templates.city_memory[args.city]}
 
     #jobfile    = file
 

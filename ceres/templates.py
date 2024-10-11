@@ -6,14 +6,24 @@ from ceres import versions
 templates = {
     'hypathia':   {'hypathia_def' : 'hypathia_def.conf'},
     'irene' :     {'irene_def'    : 'irene_def.conf',
-                   'ArConf'       : 'irene_Ar.conf'},
+                   'ArConf'       : 'irene_Ar.conf',
+                   'ArLowEConf'   : 'irene_Ar_LowEnergy.conf'},
     'dorothea' :  {'dorothea_def' : 'dorothea_def.conf',
-                   'ArConf'       : 'dorothea_Ar.conf'},
+                   'ArConf'       : 'dorothea_Ar.conf',},
     'sophronia' : {'sophronia_def': 'sophronia_def.conf',
-                   'ArConf'       : 'sophronia_Ar.conf'},
+                   'ArConf'       : 'sophronia_Ar.conf',
+                   'ArLowEConf'   : 'sophronia_Ar_LowEnergy.conf'},
     'esmeralda' : {'esmeralda_def': 'esmeralda_def.conf',
                    'ArConf'       : 'esmeralda_Ar.conf'}
 
+}
+
+city_memory = {
+    'hypathia': '5gb',
+    'irene' : '1gb',
+    'dorothea' :'5gb',
+    'sophronia' : '5gb',
+    'esmeralda' : '5gb',
 }
 
 def get_dir(version):
