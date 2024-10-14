@@ -7,12 +7,14 @@ templates = {
     'hypathia':   {'hypathia_def' : 'hypathia_def.conf'},
     'irene' :     {'irene_def'    : 'irene_def.conf',
                    'ArConf'       : 'irene_Ar.conf',
-                   'ArLowEConf'   : 'irene_Ar_LowEnergy.conf'},
+                   'ArLowEConf'   : 'irene_Ar_LowEnergy.conf',
+                   'Alphas'       : 'irene_Alphas.conf'},
     'dorothea' :  {'dorothea_def' : 'dorothea_def.conf',
-                   'ArConf'       : 'dorothea_Ar.conf',},
+                   'ArConf'       : 'dorothea_Ar.conf'},
     'sophronia' : {'sophronia_def': 'sophronia_def.conf',
                    'ArConf'       : 'sophronia_Ar.conf',
-                   'ArLowEConf'   : 'sophronia_Ar_LowEnergy.conf'},
+                   'ArLowEConf'   : 'sophronia_Ar_LowEnergy.conf',
+                   'Alphas'       : 'sophronia_Alphas.conf'},
     'esmeralda' : {'esmeralda_def': 'esmeralda_def.conf',
                    'ArConf'       : 'esmeralda_Ar.conf'}
 
